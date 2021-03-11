@@ -1,12 +1,13 @@
 import {fetchLeagueInfo} from "../../services/kicker-api.service";
 import {leagueMap} from "../../models/kicker/maps";
 import type {LeagueInfo} from '../../models/kicker/league-info';
+import type {Request} from 'polka';
 
 export const getLeagueInfo = async (leagueId: string): Promise<LeagueInfo> => {
   const response = await fetchLeagueInfo(leagueId);
   return response.data.league;
 }
-export const get = async (req, res) => {
+export const get = async (req: Request, res) => {
   const {leagueName} = req.params;
 
   if (!(leagueName in leagueMap)) {

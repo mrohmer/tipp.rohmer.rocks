@@ -64,5 +64,10 @@
                 </a>
             </li>
         {/if}
+        <li>
+            <a href="/auth/logout">
+                logout
+            </a>
+        </li>
     </ul>
 </nav>

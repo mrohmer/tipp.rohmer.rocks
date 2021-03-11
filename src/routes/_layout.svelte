@@ -1,5 +1,9 @@
 <script lang="ts">
 	import Nav from '../components/Nav.svelte';
+	import Login from '../components/Login.svelte'
+	import {stores} from '@sapper/app';
+	import setPrototypeOf = Reflect.setPrototypeOf;
+	const {session} = stores();
 
 	export let segment: string;
 </script>
