@@ -5,9 +5,7 @@ import type {MatchDetail, MatchDetailResponse, MatchResponse} from '../models/ki
 type AxiosPromise<T> = Promise<AxiosResponse<T>>;
 const baseUrl = 'http://ovsyndication.kicker.de/API/android/1.0';
 const buildUrl = (node, params?: Record<string, string|number>): string => {
-  console.log(params);
   const transformedParams = [].concat(...Object.entries(params ?? {}));
-  console.log(JSON.stringify(transformedParams));
   return `${[baseUrl, node, 3, ...transformedParams].join('/')}.json`;
 }
 export const fetchLeagueInfo = (leagueId: string, season = new Date().getFullYear().toString()): AxiosPromise<LeagueInfoResponse> =>
