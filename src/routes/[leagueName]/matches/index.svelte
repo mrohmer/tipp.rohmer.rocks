@@ -14,8 +14,10 @@
 </script>
 
 <script lang="ts">
-  import {Match, MatchResponse} from '../../../models/kicker/match';
+  import {Match} from '../../../models/kicker/match';
   import {Gameday} from '../../../models/kicker/league-info';
+  import { stores } from '@sapper/app';
+  const { page } = stores();
 
   export let gamedays: { gameday: Gameday, matches: Match[] };
 </script>
@@ -25,7 +27,9 @@
     <ul>
         {#each gameday.matches as match}
         <li>
-            {match.homeTeam.shortName} - {match.guestTeam.shortName}
+            <a href="{$page.params.leagueName}/matches/{match.id}">
+                {match.homeTeam.shortName} - {match.guestTeam.shortName}
+            </a>
         </li>
         {/each}
     </ul>
