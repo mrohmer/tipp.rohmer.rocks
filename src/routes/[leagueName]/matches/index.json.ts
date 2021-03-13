@@ -4,15 +4,7 @@ import axios from "axios";
 import type {Gameday} from '../../../models/kicker/league-info';
 import type {Match} from '../../../models/kicker/match';
 
-export async function get(req, res) {
-  const {leagueName} = req.params;
-
-  if (!(leagueName in leagueMap)) {
-    res.sendStatus(404);
-    return;
-  }
-
-  const leagueId = leagueMap[leagueName].id;
+const fetchGamedays = async (leagueId: string): Promise<{ gameday: Gameday, matches: Match[] }[]> => {
   const leagueInfo = await fetchLeagueInfo(leagueId);
   const gameResponses = await axios
     .all(
@@ -34,10 +26,22 @@ export async function get(req, res) {
       }),
       {} as Record<string, { gameday: Gameday, matches: Match[] }>,
     )
+  return Object.values(gamedays);
+}
+export const get = async (req, res) => {
+  const {leagueName} = req.params;
+
+  if (!(leagueName in leagueMap)) {
+    res.sendStatus(404);
+    return;
+  }
+
+  const leagueId = leagueMap[leagueName].id;
+  const gamedays = await fetchGamedays(leagueId);
 
   res.writeHead(200, {
     'Content-Type': 'application/json'
   });
 
-  res.end(JSON.stringify(Object.values(gamedays)));
+  res.end(JSON.stringify(gamedays));
 }
