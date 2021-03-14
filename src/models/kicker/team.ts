@@ -3,8 +3,8 @@ interface Team {
   countryId: string;
   shortName: string;
   longName: string;
-  iconSmall: string;
-  iconBig: string;
+  iconSmall?: string;
+  iconBig?: string;
   defaultLeagueId: string;
   lat: string;
   lng: string;

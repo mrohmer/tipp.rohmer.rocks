@@ -12,13 +12,21 @@ export interface Match {
   seasonId: string;
   roundId: string;
   date: string;
-  complete: string;
+  completed: string;
   approvalId: string;
   sportId: string;
   displayKey: string;
   homeTeam: Omit<MatchTeam, 'urlName'>;
   guestTeam: Omit<MatchTeam, 'urlName'>;
   stadium: Pick<Stadium, 'city'>
+  results: {
+    hergAktuell: string;
+    aergAktuell: string;
+    hergHz: string;
+    aergHz: string;
+    hergEnde: string;
+    aergEnde: string;
+  }
 }
 
 export interface MatchDetailResponse {
