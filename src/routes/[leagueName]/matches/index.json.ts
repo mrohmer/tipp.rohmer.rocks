@@ -3,7 +3,7 @@ import {leagueMap} from "../../../models/kicker/maps";
 import type {Match} from '../../../models/kicker/match';
 import {getLeagueInfo} from '../index.json';
 
-export const getGamedayMatches = async (leagueId: string, gamedayId: string, seasonId: string): Promise<Match[]> => {
+export const getGamedayMatches = async (leagueId: string, gamedayId: string, seasonId?: string): Promise<Match[]> => {
   const response = await fetchGames(leagueId, gamedayId, seasonId);
   return response.data.matches.match;
 }
@@ -22,10 +22,9 @@ export const get = async (req, res) => {
   if (!gamedayId) {
     const leagueInfo = await getLeagueInfo(leagueId);
     gamedayId = leagueInfo.currentRoundId ?? '1';
-
   }
 
-  const matches = await getGamedayMatches(leagueId, gamedayId, '2017')
+  const matches = await getGamedayMatches(leagueId, gamedayId)
 
   res.writeHead(200, {
     'Content-Type': 'application/json'
