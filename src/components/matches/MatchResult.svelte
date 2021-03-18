@@ -7,6 +7,7 @@
   function twoDigitStr(n: number): string {
     return n.toString().padStart(2, '0')
   }
+
   $: isBeforeMatch = !('results' in match)
   $: isInMatch = 'results' in match && match.completed === '0';
   $: isAfterMatch = 'results' in match && match.completed === '1';
@@ -22,21 +23,26 @@
         text-align: center;
         display: inline-block;
     }
+
     .match-result.match-result--big {
         width: 100px;
         height: 67px;
         font-size: 30px;
         line-height: 45px;
     }
+
     .match-result.match-result--running {
         color: #fad000;
     }
+
     .match-result.match-result--date {
         font-size: 16px;
         color: #d7d7d7;
     }
+
     .match-result.match-result--big.match-result--date {
-        font-size: 23px;
+        font-size: 28px;
+        line-height: 67px;
     }
 
     .match-result__digit, .match-result__separator {
@@ -58,7 +64,11 @@
      class:match-result--done={isAfterMatch}
 >
     {#if isBeforeMatch}
-        {twoDigitStr(new Date(match.date).getHours())}:{twoDigitStr(new Date(match.date).getMinutes())}
+        {#if match.timeConfirmed === '1'}
+            {twoDigitStr(new Date(match.date).getHours())}:{twoDigitStr(new Date(match.date).getMinutes())}
+        {:else}
+            🤷
+        {/if}
     {:else if isInMatch}
         <div class="match-result__digit">
             {match.results.hergAktuell}
