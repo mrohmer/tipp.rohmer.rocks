@@ -141,8 +141,10 @@
                     class="match-list-link"
                 >
                     <MatchListItem {match}/>
-                    <Tip {match} leagueName={$page.params.leagueName} />
                 </a>
+                {#if match.homeTeam.id !== '0' && match.guestTeam.id !== '0'}
+                    <Tip {match} leagueName={$page.params.leagueName} />
+                {/if}
             {/each}
         </div>
     {/each}

@@ -6,6 +6,8 @@ export const post = async (req, res) => {
   const {leagueName, matchId} = req.params;
   const {home: rawHome, guest: rawGuest} = req.body;
 
+  console.log(req.body);
+
   if (rawHome === undefined || rawGuest === undefined) {
     res.statusCode = 400;
     res.end(JSON.stringify({
