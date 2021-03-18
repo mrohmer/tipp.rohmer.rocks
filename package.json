@@ -20,6 +20,7 @@
     "njwt": "^1.0.0",
     "node-cache": "^5.1.2",
     "node-fetch": "^2.6.1",
+    "object-hash": "^2.1.1",
     "passport": "^0.4.1",
     "passport-auth0": "^1.4.0",
     "polka": "next",
