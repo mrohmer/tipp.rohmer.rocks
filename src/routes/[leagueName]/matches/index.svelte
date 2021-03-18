@@ -39,6 +39,7 @@
 <script lang="ts">
   import {stores} from '@sapper/app';
   import MatchListItem from "../../../components/matches/MatchListItem.svelte";
+  import Tip from "../../../components/matches/Tip.svelte";
 
   const {page} = stores();
 
@@ -140,6 +141,7 @@
                     class="match-list-link"
                 >
                     <MatchListItem {match}/>
+                    <Tip {match} leagueName={$page.params.leagueName} />
                 </a>
             {/each}
         </div>
