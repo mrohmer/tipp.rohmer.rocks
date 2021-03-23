@@ -142,9 +142,9 @@
       background: #111;
       color: rgb(255 62 0);
       outline: 0;
-    }
-    &:focus, &:active {
-      background: #222;
+      &:focus, &:active {
+        background: #222;
+      }
     }
   }
 </style>
