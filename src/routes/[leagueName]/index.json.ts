@@ -1,5 +1,5 @@
 import {fetchLeagueInfo} from "../../services/kicker-api.service";
-import {leagueMap} from "../../models/kicker/maps";
+import {leagueMap} from "../../models/kicker/leagues";
 import type {LeagueInfo} from '../../models/kicker/league-info';
 import type {Request} from 'polka';
 

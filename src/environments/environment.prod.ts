@@ -1,4 +1,5 @@
 import type {Environment} from './environments.interface';
+import {LeagueKey} from '../models/kicker/leagues';
 
 export const environment: Environment = {
   production: true,
@@ -15,4 +16,8 @@ export const environment: Environment = {
     callbackURL: '__AUTH_CALLBACK_URL__',
     logoutRedirect: '__AUTH_LOGOUT_REDIRECT_URL__',
   },
+  leagues: [
+    LeagueKey.EM,
+    LeagueKey.EM_U21,
+  ],
 };

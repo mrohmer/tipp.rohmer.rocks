@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {leagueMap} from '../models/kicker/maps';
+  import {leagueMap} from '../models/kicker/leagues';
 
   export let segment: string;
 </script>
