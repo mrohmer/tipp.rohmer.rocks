@@ -64,14 +64,14 @@
         text-align: center;
         font-size: 10px;
         position: relative;
-        color: #777;
+        color: #444;
     }
     .tip__headline:before, .tip__headline:after {
         content: '';
         position: absolute;
         width: 30px;
         height: 1px;
-        background: #777;
+        background: #444;
         max-width: calc(50% - 35px);
         top: 0;
         bottom: 0;
@@ -96,7 +96,7 @@
         vertical-align: bottom;
     }
     .tip__number, .tip__separator {
-        background: #666;
+        background: #181818;
         color: white;
         font-size: 18px;
         text-align: center;
@@ -126,12 +126,12 @@
         margin-right: -55px;
         border: none;
         width: 50px;
-        background: white;
+        background: #111;
         color: rgb(255 62 0);
         outline: 0;
     }
     .tip__submit:focus, .tip__submit:active {
-        background: #ccc;
+        background: #222;
     }
 </style>
 
