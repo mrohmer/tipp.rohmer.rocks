@@ -12,7 +12,6 @@
         text-align: center;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 10px;
     }
     .match-list-item__team-name {
         text-align: left;

@@ -113,6 +113,9 @@
     .match-list-link {
         text-decoration: none;
     }
+    .match-item {
+        margin-bottom: 20px;
+    }
 </style>
 
 {#if gameday}
@@ -137,14 +140,16 @@
                 {date}
             </h3>
             {#each ms as match}
-                <a href="{$page.params.leagueName}/match/{match.id}"
-                    class="match-list-link"
-                >
-                    <MatchListItem {match}/>
-                </a>
-                {#if match.homeTeam.id !== '0' && match.guestTeam.id !== '0'}
-                    <Tip {match} leagueName={$page.params.leagueName} />
-                {/if}
+                <div class="match-item">
+                    <a href="{$page.params.leagueName}/match/{match.id}"
+                       class="match-list-link"
+                    >
+                        <MatchListItem {match}/>
+                    </a>
+                    {#if match.homeTeam.id !== '0' && match.guestTeam.id !== '0'}
+                        <Tip {match} leagueName={$page.params.leagueName} />
+                    {/if}
+                </div>
             {/each}
         </div>
     {/each}

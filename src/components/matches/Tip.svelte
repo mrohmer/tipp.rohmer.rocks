@@ -59,23 +59,117 @@
 
 </script>
 
-{#if loading}
-    loading...
-{:else if error}
-    error 😭
-{:else if 'results' in match}
-    {#if tip.home === null}
-        kein tip 🙈
-    {:else}
-        {tip.home}:{tip.guest}
-    {/if}
-{:else}
-    <form class="tip" on:submit={async () => updateTip(tip)}>
-        <div class="tip__inputs">
-            <input bind:value={tip.home}>
-            :
-            <input bind:value={tip.guest}>
-        </div>
-        <button type="submit">save</button>
-    </form>
-{/if}
+<style>
+    .tip__headline {
+        text-align: center;
+        font-size: 10px;
+        position: relative;
+        color: #777;
+    }
+    .tip__headline:before, .tip__headline:after {
+        content: '';
+        position: absolute;
+        width: 30px;
+        height: 1px;
+        background: #777;
+        max-width: calc(50% - 35px);
+        top: 0;
+        bottom: 0;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+    .tip__headline:before {
+        right: calc(50% + 12px);
+    }
+    .tip__headline:after {
+        left: calc(50% + 12px);
+    }
+    .tip__content {
+        text-align: center;
+    }
+    .tip--tipable .tip__content,
+    .tip--over .tip__content {
+        font-size: 0;
+    }
+    .tip__number, .tip__separator {
+        display: inline-block;
+        vertical-align: bottom;
+    }
+    .tip__number, .tip__separator {
+        background: #666;
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+    }
+    .tip__number {
+        width: 28px;
+    }
+    .tip__separator {
+        width: 4px;
+    }
+    .tip__number input {
+        color: inherit;
+        text-align: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        border: none;
+        background: transparent;
+        width: 100%;
+        outline: 0;
+        padding: 0;
+    }
+    .tip__submit {
+        height: 40px;
+        margin-left: 5px;
+        margin-right: -55px;
+        border: none;
+        width: 50px;
+        background: white;
+        color: rgb(255 62 0);
+        outline: 0;
+    }
+    .tip__submit:focus, .tip__submit:active {
+        background: #ccc;
+    }
+</style>
+
+<div class="tip"
+     class:tip--loading={loading}
+     class:tip--error={error}
+     class:tip--tipable={!loading && !error && !('results' in match)}
+     class:tip--over={!loading && !error && 'results' in match}
+>
+    <div class="tip__headline">Tip</div>
+    <div class="tip__content">
+        {#if loading}
+            loading...
+        {:else if error}
+            error 😭
+        {:else if 'results' in match}
+            {#if tip.home === null}
+                kein tip<br>🙈
+            {:else}
+                <div class="tip__number">
+                    {tip.home}
+                </div>
+                <div class="tip__separator">:</div>
+                <div class="tip__number">
+                    {tip.guest}
+                </div>
+            {/if}
+        {:else}
+            <form on:submit={async () => updateTip(tip)}>
+                <div class="tip__number tip__number--input">
+                    <input bind:value={tip.home}>
+                </div>
+                <div class="tip__separator">:</div>
+                <div class="tip__number tip__number--input">
+                    <input bind:value={tip.guest}>
+                </div>
+                <button type="submit" class="tip__submit">save</button>
+            </form>
+        {/if}
+    </div>
+</div>
