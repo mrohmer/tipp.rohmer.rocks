@@ -22,6 +22,7 @@
       loading = false;
     }
   }
+
   @Cached('tip')
   async function fetchTip(url: string): Promise<Tip> {
     if (typeof fetch === 'undefined') {
@@ -36,6 +37,7 @@
     }
     return Promise.resolve(new Tip());
   }
+
   async function getData(lN: string, matchId: string) {
     try {
       console.log('after update');
@@ -59,14 +61,17 @@
 
 </script>
 
-<style>
-    .tip__headline {
-        text-align: center;
-        font-size: 10px;
-        position: relative;
-        color: #444;
-    }
-    .tip__headline:before, .tip__headline:after {
+<style type="text/scss">
+  .tip {
+    $this: &;
+
+    &__headline {
+      text-align: center;
+      font-size: 10px;
+      position: relative;
+      color: #444;
+
+      &:before, &:after {
         content: '';
         position: absolute;
         width: 30px;
@@ -77,39 +82,36 @@
         bottom: 0;
         margin-top: auto;
         margin-bottom: auto;
-    }
-    .tip__headline:before {
+      }
+      &:before {
         right: calc(50% + 12px);
-    }
-    .tip__headline:after {
+      }
+      &:after {
         left: calc(50% + 12px);
+      }
     }
-    .tip__content {
-        text-align: center;
+
+    &__content {
+      text-align: center;
     }
-    .tip--tipable .tip__content,
-    .tip--over .tip__content {
+    &--tipable, &--over {
+      #{$this}__content {
         font-size: 0;
+      }
     }
-    .tip__number, .tip__separator {
-        display: inline-block;
-        vertical-align: bottom;
+    &__number, &__separator {
+      display: inline-block;
+      vertical-align: bottom;
+      background: #181818;
+      color: white;
+      font-size: 18px;
+      text-align: center;
+      height: 40px;
+      line-height: 40px;
     }
-    .tip__number, .tip__separator {
-        background: #181818;
-        color: white;
-        font-size: 18px;
-        text-align: center;
-        height: 40px;
-        line-height: 40px;
-    }
-    .tip__number {
-        width: 28px;
-    }
-    .tip__separator {
-        width: 4px;
-    }
-    .tip__number input {
+    &__number {
+      width: 28px;
+      input {
         color: inherit;
         text-align: inherit;
         font-size: inherit;
@@ -119,20 +121,25 @@
         width: 100%;
         outline: 0;
         padding: 0;
+      }
     }
-    .tip__submit {
-        height: 40px;
-        margin-left: 5px;
-        margin-right: -55px;
-        border: none;
-        width: 50px;
-        background: #111;
-        color: rgb(255 62 0);
-        outline: 0;
+    &__separator {
+      width: 4px;
     }
-    .tip__submit:focus, .tip__submit:active {
-        background: #222;
+    &__submit {
+      height: 40px;
+      margin-left: 5px;
+      margin-right: -55px;
+      border: none;
+      width: 50px;
+      background: #111;
+      color: rgb(255 62 0);
+      outline: 0;
     }
+    &:focus, &:active {
+      background: #222;
+    }
+  }
 </style>
 
 <div class="tip"

@@ -23,6 +23,7 @@
       throw {status: res.status, message: data.message}
     }
   }
+
   export async function preload({params, query}: polka.Request): Promise<{ leagueInfo: LeagueInfo, matches: Match[] }> {
     const {leagueName} = params;
 
@@ -31,7 +32,7 @@
       const leagueInfo = await getLeagueInfo(this.fetch.bind(this), leagueName);
       return {matches, leagueInfo};
     } catch (e) {
-        this.error(e.status, e.message);
+      this.error(e.status, e.message);
     }
   }
 </script>
@@ -90,32 +91,35 @@
 
 </script>
 
-<style>
-    .gameday-nav {
-        display: flex;
+<style type="text/scss">
+  .gameday-nav {
+    display: flex;
+
+    &__link {
+      width: 50px;
+      text-align: center;
     }
 
-    .gameday-nav__link {
-        width: 50px;
-        text-align: center;
+    &__title {
+      flex-grow: 1;
+      text-align: center;
     }
+  }
 
-    .gameday-nav__title {
-        flex-grow: 1;
-        text-align: center;
+  .match-list-date {
+    margin-bottom: 25px;
+    &__headline {
+      text-align: center;
     }
-    .match-list-date {
-        margin-bottom: 25px;
-    }
-    .match-list-date__headline {
-        text-align: center;
-    }
-    .match-list-link {
-        text-decoration: none;
-    }
-    .match-item {
-        margin-bottom: 20px;
-    }
+  }
+
+  .match-list-link {
+    text-decoration: none;
+  }
+
+  .match-item {
+    margin-bottom: 20px;
+  }
 </style>
 
 {#if gameday}
@@ -136,7 +140,7 @@
     </div>
     {#each matchesByDate as {date, ms}}
         <div class="match-list-date">
-            <h3  class="match-list-date__headline">
+            <h3 class="match-list-date__headline">
                 {date}
             </h3>
             {#each ms as match}
@@ -147,7 +151,7 @@
                         <MatchListItem {match}/>
                     </a>
                     {#if match.homeTeam.id !== '0' && match.guestTeam.id !== '0'}
-                        <Tip {match} leagueName={$page.params.leagueName} />
+                        <Tip {match} leagueName={$page.params.leagueName}/>
                     {/if}
                 </div>
             {/each}
