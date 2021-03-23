@@ -176,11 +176,11 @@
         {:else}
             <form on:submit={async () => updateTip(tip)}>
                 <div class="tip__number tip__number--input">
-                    <input bind:value={tip.home}>
+                    <input bind:value={tip.home} placeholder="-">
                 </div>
                 <div class="tip__separator">:</div>
                 <div class="tip__number tip__number--input">
-                    <input bind:value={tip.guest}>
+                    <input bind:value={tip.guest} placeholder="-">
                 </div>
                 {#if dirty}
                     <button type="submit" class="tip__submit">save</button>
