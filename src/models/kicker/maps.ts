@@ -1,13 +1,17 @@
 export const leagueMap: Record<string, Record<'id'|'name', string>> = {
-  'u21-em': {
+  'em-u21': {
     id: '124',
     name: 'U21 EM',
   },
-  '1-bl': {
+  'em': {
+    id: '107',
+    name: 'EM',
+  },
+  'bl': {
     id: '1',
     name: 'Bundeliga'
   },
-  '2-bl': {
+  'bl2': {
     id: '2',
     name: '2. Bundeliga'
   },
