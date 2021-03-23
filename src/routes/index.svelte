@@ -1,8 +1,10 @@
 <script lang="ts">
-	import {leagueMap} from '../models/kicker/maps';
+	import {leagueMap} from '../models/kicker/leagues';
+	import {environment} from '../environments/environment';
 
 	const leagues = Object
 			.entries(leagueMap)
+			.filter(([key, _]) => environment.leagues.includes(key))
 			.map(([key, {name}]) => ({key, name}))
 </script>
 

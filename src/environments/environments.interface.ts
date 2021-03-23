@@ -1,3 +1,5 @@
+import type {LeagueKey} from '../models/kicker/leagues';
+
 export interface Environment {
   production: boolean;
   overrideSeason?: string;
@@ -13,5 +15,6 @@ export interface Environment {
     clientSecret: string;
     callbackURL: string;
     logoutRedirect: string;
-  }
+  },
+  leagues: LeagueKey[];
 }
