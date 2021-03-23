@@ -5,6 +5,9 @@
   import {Cached} from '../../decorators/cache';
 
   async function updateTip(data: Tip): Promise<Tip> {
+    if (!dirty) {
+      return;
+    }
     loading = true;
 
     try {
@@ -15,6 +18,7 @@
         },
         body: JSON.stringify({home: tip.home, guest: tip.guest}),
       });
+      originalTip = JSON.parse(JSON.stringify(tip));
     } catch (e) {
       error = true;
       console.log(e);
@@ -42,6 +46,7 @@
     try {
       console.log('after update');
       tip = await fetchTip(`/${lN}/match/${matchId}/tip`)
+      originalTip = JSON.parse(JSON.stringify(tip));
     } catch (e) {
       console.log(e);
       error = true;
@@ -54,10 +59,12 @@
   export let leagueName: string;
 
   let tip: Tip;
+  let originalTip: Tip;
   let loading = true;
   let error = false;
 
   $: getData(leagueName, match.id)
+  $: dirty = tip && originalTip && (tip.home !== originalTip.home || tip.guest !== originalTip.guest)
 
 </script>
 
@@ -175,7 +182,9 @@
                 <div class="tip__number tip__number--input">
                     <input bind:value={tip.guest}>
                 </div>
-                <button type="submit" class="tip__submit">save</button>
+                {#if dirty}
+                    <button type="submit" class="tip__submit">save</button>
+                {/if}
             </form>
         {/if}
     </div>
