@@ -100,11 +100,9 @@
     }
 
     &__content {
-      text-align: center;
-    }
-    &--tipable {
-      #{$this}__content {
-        font-size: 0;
+      &, & form {
+        display: flex;
+        justify-content: center;
       }
     }
     &__number, &__separator {
