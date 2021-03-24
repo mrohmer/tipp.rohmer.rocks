@@ -11,6 +11,7 @@
   $: isBeforeMatch = !('results' in match)
   $: isInMatch = 'results' in match && match.completed === '0';
   $: isAfterMatch = 'results' in match && match.completed === '1';
+  $: isAfterFirstHalftime = isAfterMatch && match.results.hergHz;
 </script>
 <style type="text/scss">
   .match-result {
@@ -32,13 +33,17 @@
 
     &--big {
       width: 100px;
-      height: 67px;
+      height: 45px;
       font-size: 30px;
       line-height: 45px;
 
+      &#{$this}--first-half-over {
+        height: 67px;
+      }
+
       &#{$this}--date {
         font-size: 28px;
-        line-height: 67px;
+        line-height: 45px;
       }
     }
 
@@ -64,6 +69,7 @@
      class:match-result--date="{isBeforeMatch}"
      class:match-result--running={isInMatch}
      class:match-result--done={isAfterMatch}
+     class:match-result--first-half-over={isAfterFirstHalftime}
 >
     {#if isBeforeMatch}
         {#if match.timeConfirmed === '1'}
@@ -91,7 +97,7 @@
         <div class="match-result__digit">
             {match.results.aergEnde}
         </div>
-        {#if size === 'big'}
+        {#if size === 'big' && isAfterFirstHalftime}
             <div class="match-result__halftime">
                 <div class="match-result__digit">
                     {match.results.hergHz}
