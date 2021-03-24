@@ -48,6 +48,7 @@
 <script lang="ts">
   import {stores} from '@sapper/app';
   import MatchHeader from "../../../components/matches/MatchHeader.svelte";
+  import Tip from "../../../components/matches/Tip.svelte";
 
   const {page} = stores();
   export let match: Match;
@@ -60,3 +61,4 @@
     back
 </a>
 <MatchHeader {match} {gameday}/>
+<Tip {match} leagueName={$page.params.leagueName} hasHeader={false}/>

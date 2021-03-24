@@ -57,6 +57,7 @@
 
   export let match: Match;
   export let leagueName: string;
+  export let hasHeader = true;
 
   let tip: Tip;
   let originalTip: Tip;
@@ -155,7 +156,9 @@
      class:tip--tipable={!loading && !error && !('results' in match)}
      class:tip--over={!loading && !error && 'results' in match}
 >
-    <div class="tip__headline">Tip</div>
+    {#if hasHeader}
+        <div class="tip__headline">Tip</div>
+    {/if}
     <div class="tip__content">
         {#if loading}
             loading...
