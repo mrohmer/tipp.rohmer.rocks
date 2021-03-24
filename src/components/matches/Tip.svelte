@@ -102,7 +102,7 @@
     &__content {
       text-align: center;
     }
-    &--tipable, &--over {
+    &--tipable {
       #{$this}__content {
         font-size: 0;
       }
@@ -119,6 +119,8 @@
     }
     &__number {
       width: 28px;
+      overflow: hidden;
+
       input {
         color: inherit;
         text-align: inherit;
@@ -157,7 +159,7 @@
      class:tip--over={!loading && !error && 'results' in match}
 >
     {#if hasHeader}
-        <div class="tip__headline">Tip</div>
+        <div class="tip__headline">Tipp</div>
     {/if}
     <div class="tip__content">
         {#if loading}
@@ -165,8 +167,8 @@
         {:else if error}
             error 😭
         {:else if 'results' in match}
-            {#if tip.home === null}
-                kein tip<br>🙈
+            {#if tip.home === undefined}
+                kein Tipp 🙈
             {:else}
                 <div class="tip__number">
                     {tip.home}
