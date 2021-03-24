@@ -1,5 +1,11 @@
 <script lang="ts">
   import {leagueMap} from '../models/kicker/leagues';
+  import {environment} from '../environments/environment.local';
+
+  const hasLeagueOverview = Object
+    .entries(leagueMap)
+    .filter(([key, _]) => environment.leagues.includes(key))
+    .length > 1
 
   export let segment: string;
 </script>
@@ -49,11 +55,13 @@
 
 <nav>
     <ul>
-        <li>
-            <a href="." aria-current="{segment === undefined ? 'page' : undefined}">
-                Wettbewerbsübersicht
-            </a>
-        </li>
+        {#if hasLeagueOverview}
+            <li>
+                <a href="." aria-current="{segment === undefined ? 'page' : undefined}">
+                    Wettbewerbe
+                </a>
+            </li>
+        {/if}
         {#if  Object.keys(leagueMap).includes(segment)}
             <li>
                 <a href="/{segment}/matches" aria-current="page">

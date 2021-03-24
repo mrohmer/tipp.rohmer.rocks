@@ -1,11 +1,22 @@
-<script lang="ts">
+<script context="module" lang="ts">
 	import {leagueMap} from '../models/kicker/leagues';
 	import {environment} from '../environments/environment';
 
-	const leagues = Object
-			.entries(leagueMap)
-			.filter(([key, _]) => environment.leagues.includes(key))
-			.map(([key, {name}]) => ({key, name}))
+	export async function preload(page, session) {
+		const leagues = Object
+				.entries(leagueMap)
+				.filter(([key, _]) => environment.leagues.includes(key))
+				.map(([key, {name}]) => ({key, name}))
+
+		if (leagues.length === 1) {
+			return this.redirect(301, `/${leagues[0].key}/matches`);
+		}
+		return {leagues};
+	}
+
+</script>
+<script lang="ts">
+	export let leagues: Record<'key' | 'name', string>
 </script>
 
 <style>
