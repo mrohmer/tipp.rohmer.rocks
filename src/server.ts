@@ -56,7 +56,7 @@ const app = polka(); // You can also use Express
         resave: true,
         saveUninitialized: true,
         cookie: {
-          maxAge: 31536000,
+          maxAge: 2592000000,
           secure: environment.production,
         },
         store: new FileStore({
