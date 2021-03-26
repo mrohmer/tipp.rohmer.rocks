@@ -17,4 +17,8 @@ export interface Environment {
     logoutRedirect: string;
   },
   leagues: LeagueKey[];
+  push: {
+    publicKey: string;
+    privateKey: string;
+  }
 }

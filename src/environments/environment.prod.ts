@@ -20,4 +20,8 @@ export const environment: Environment = {
     LeagueKey.EM,
     LeagueKey.EM_U21,
   ],
+  push: {
+    publicKey: '__PUSH_PUBLIC__',
+    privateKey: '__PUSH_PRIVATE__',
+  },
 };

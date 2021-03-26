@@ -2,15 +2,19 @@
   import {leagueMap} from '../models/kicker/leagues';
   import {environment} from '../environments/environment.local';
 
-  const hasLeagueOverview = Object
+  const leagueArray = Object
     .entries(leagueMap)
-    .filter(([key, _]) => environment.leagues.includes(key))
-    .length > 1
+    .map(([key, value]) => ({key, value}))
+    .filter(({key}) => environment.leagues.includes(key))
+  ;
+
+
 
   export let segment: string;
 </script>
 
 <style type="text/scss">
+  @use "../styles/variables" as var;
     nav {
         border-bottom: 1px solid rgba(255, 62, 0, 0.1);
         font-weight: 300;
@@ -42,7 +46,7 @@
                 content: '';
                 width: calc(100% - 1em);
                 height: 2px;
-                background-color: rgb(255, 62, 0);
+                background-color: var.$primaryColor;
                 display: block;
                 bottom: -1px;
               }
@@ -55,20 +59,31 @@
 
 <nav>
     <ul>
-        {#if hasLeagueOverview}
+        {#if leagueArray.length > 1}
             <li>
                 <a href="." aria-current="{segment === undefined ? 'page' : undefined}">
                     Wettbewerbe
                 </a>
             </li>
-        {/if}
-        {#if  Object.keys(leagueMap).includes(segment)}
+            {#if  Object.keys(leagueMap).includes(segment)}
+                <li>
+                    <a href="/{segment}/matches" aria-current="page">
+                        {leagueMap[segment].name}
+                    </a>
+                </li>
+            {/if}
+        {:else if leagueArray.length === 1}
             <li>
-                <a href="/{segment}/matches" aria-current="page">
-                    {leagueMap[segment].name}
+                <a href="/{leagueArray[0].key}/matches" aria-current="{segment === leagueArray[0].key ? 'page' : undefined}">
+                    {leagueArray[0].value.name}
                 </a>
             </li>
         {/if}
+        <li>
+            <a href="/settings" aria-current="{segment === 'settings' ? 'page' : undefined}">
+                Einstellungen
+            </a>
+        </li>
         <li>
             <a href="/auth/logout">
                 logout

@@ -84,3 +84,41 @@ self.addEventListener('fetch', (event: FetchEvent) => {
 		);
 	}
 });
+self.addEventListener('push', e => {
+	const {title, body, icon, actions, data} = e.data.json();
+	const options = {
+		body,
+		icon: icon ?? '/favicon.png',
+		vibrate: [100, 50, 100],
+		data,
+		actions,
+	};
+	e.waitUntil(
+		(self as any).registration.showNotification(title, options)
+	);
+});
+
+self.addEventListener('notificationclick', e => {
+	e.waitUntil((async () => {
+		const notification = e.notification;
+		const action = e.action;
+		const path = notification.data.path ?? '/';
+
+		if (action !== 'close') {
+			const currentClients = await clients.matchAll({
+				type: 'window',
+				includeUncontrolled: true
+			});
+			const client = currentClients.find(c => new URL(c.url).pathname === path)
+			if (!!client) {
+				client.focus();
+			} else {
+				clients.openWindow(new URL(path, self.location.origin).href);
+			}
+		}
+		notification.close();
+	})());
+});
+
+declare var clients: any;
+

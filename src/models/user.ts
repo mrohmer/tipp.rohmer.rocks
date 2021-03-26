@@ -8,4 +8,8 @@ export class User {
   foreignId: string;
   @Column()
   displayName: string;
+  @Column()
+  notificationsEnabled: boolean;
+  @Column()
+  notificationEndpoints: string[];
 }
