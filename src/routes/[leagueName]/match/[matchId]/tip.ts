@@ -64,6 +64,8 @@ export const post = async (req, res) => {
 
   tip.home = home;
   tip.guest = guest;
+  tip.leagueId = match.leagueId;
+  tip.season = match.seasonId;
 
   await repo.save(tip);
 

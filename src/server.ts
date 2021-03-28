@@ -12,6 +12,8 @@ import passport from 'passport';
 import Auth0Strategy from 'passport-auth0';
 import {securedMiddleware} from './middlewares/auth';
 import {Tip} from './models/tip';
+import cron from './crons';
+import {RatedMatch} from './models/rated-match';
 
 const {PORT, NODE_ENV} = process.env;
 const dev = NODE_ENV === 'development';
@@ -46,8 +48,12 @@ const app = polka(); // You can also use Express
     entities: [
       User,
       Tip,
-    ]
+      RatedMatch
+    ],
   })
+
+  cron();
+
   app
     .use(
       json(),

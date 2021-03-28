@@ -12,4 +12,6 @@ export class User {
   notificationsEnabled: boolean;
   @Column()
   notificationEndpoints: string[];
+  @Column()
+  points: Record<string, Record<string, number>> = {};
 }

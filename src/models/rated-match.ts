@@ -1,26 +1,16 @@
 import {Column, Entity, ObjectIdColumn} from 'typeorm';
 import {v4 as uuid} from 'uuid';
 
-@Entity()
-export class Tip {
+@Entity({ })
+export class RatedMatch {
   @ObjectIdColumn({ name: '_id', type: 'string' })
   id: string;
   @Column()
   matchId: string;
   @Column()
-  userId: string;
-  @Column()
-  home: number;
-  @Column()
-  guest: number;
-  @Column()
-  matchCompleted: boolean = false;
-  @Column()
-  points: number;
+  leagueId: string;
   @Column()
   season: string;
-  @Column()
-  leagueId: string;
 
   constructor() {
     this.id = uuid();
