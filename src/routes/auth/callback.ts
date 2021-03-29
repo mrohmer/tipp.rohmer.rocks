@@ -9,7 +9,6 @@ const addUserToDB = async (user) => {
   let dbUser = await repo.findOne({
     where: {
       foreignId: user.id,
-      displayName: user.displayName,
     }
   });
 
