@@ -25,4 +25,4 @@ const calcPoints = async () => {
 
   log('done');
 };
-export default ['* * * * *', calcPoints] as CronTupel;
+export default ['*/3 * * * *', calcPoints] as CronTupel;
