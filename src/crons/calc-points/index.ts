@@ -7,6 +7,7 @@ import type {Match} from '../../models/kicker/match';
 import {arrayUnique} from './utils';
 import {addNotifications} from './add-notifications';
 import {log} from './log';
+import {closeConnection} from './db';
 
 const calcPoints = async () => {
   log('starting');
@@ -22,6 +23,8 @@ const calcPoints = async () => {
   const changes = await recalcUsersPoints(arrayUnique(matchIds));
 
   await addNotifications(changes);
+
+  await closeConnection();
 
   log('done');
 };

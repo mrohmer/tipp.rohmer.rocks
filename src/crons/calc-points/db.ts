@@ -17,6 +17,12 @@ const getConnection = () => {
   }
   return connection;
 };
+export const closeConnection = async () => {
+  if (connection) {
+    await connection.close();
+    connection = null;
+  }
+}
 export const getTipRepository = () => {
   if (!tipRepository) {
     tipRepository = getConnection().getRepository(Tip);
@@ -24,19 +30,19 @@ export const getTipRepository = () => {
   return tipRepository;
 }
 export const getUserRepository = () => {
-  if (!userRepository) {
+  if (!connection || !userRepository) {
     userRepository = getConnection().getRepository(User);
   }
   return userRepository;
 }
 export const getRatedMatchRepository = () => {
-  if (!ratedMatchRepository) {
+  if (!connection || !ratedMatchRepository) {
     ratedMatchRepository = getConnection().getRepository(RatedMatch);
   }
   return ratedMatchRepository;
 }
 export const getNotificationRepository = () => {
-  if (!notificationRepository) {
+  if (!connection || !notificationRepository) {
     notificationRepository = getConnection().getRepository(Notification);
   }
   return notificationRepository;
