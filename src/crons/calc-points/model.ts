@@ -1,6 +1,6 @@
-import type {User} from '../../models/user';
+import type {Points, User} from '../../models/user';
 
 export interface Change {
-  difference: number ;
+  difference: Points;
   user: User;
 }

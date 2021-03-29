@@ -15,7 +15,39 @@ const calcTotalPointsFromObj = (points: Points): number => Object.values(points)
     (prev, curr) => prev + calcTotalPointsFromSeasonObj(curr),
     0,
   )
-const recalcSingleUsersPoints = async (user: User): Promise<number> => {
+const calcDifferenceForLeague = (previous: Record<string, number>, current: Record<string, number>): Record<string, number> => {
+  const seasons = arrayUnique([
+    ...Object.keys(previous),
+    ...Object.keys(current),
+  ]);
+  const result: Record<string, number> = {};
+  seasons.forEach(key => {
+    const difference = (current[key] ?? 0) - (previous[key] ?? 0);
+    if (difference > 0) {
+      result[key] = difference
+    }
+  });
+  return result;
+};
+const calcDifference = (previous: Points, current: Points): Points => {
+  const leagueIds = arrayUnique([
+    ...Object.keys(previous),
+    ...Object.keys(current),
+  ]);
+
+  const result: Points = {};
+  leagueIds.forEach(key => {
+    const difference = calcDifferenceForLeague(
+      previous[key] ?? {},
+      current[key] ?? {},
+    );
+    if (Object.keys(difference).length > 0) {
+      result[key] = difference;
+    }
+  });
+  return result;
+}
+const recalcSingleUsersPoints = async (user: User): Promise<Points> => {
   const tips = await getTipRepository().find({
     where: {
       userId: user.foreignId,
@@ -36,7 +68,7 @@ const recalcSingleUsersPoints = async (user: User): Promise<number> => {
   const previous = user.points ?? {};
   user.points = points;
   await getUserRepository().save(user);
-  return calcTotalPointsFromObj(user.points) - calcTotalPointsFromObj(previous);
+  return calcDifference(previous, user.points);
 }
 const getUsersWithTipsForMatchesWithValue = async (matchIds: string[]): Promise<string[]> => {
   const tips = await getTipRepository()
@@ -72,5 +104,5 @@ export const recalcUsersPoints = async (matchIds: string[]): Promise<Change[]> =
   );
 
   return changes
-    .filter(({difference}) => difference > 0);
+    .filter(({difference}) => Object.keys(difference).length > 0);
 };

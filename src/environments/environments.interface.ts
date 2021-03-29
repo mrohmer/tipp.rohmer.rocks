@@ -20,5 +20,6 @@ export interface Environment {
   push: {
     publicKey: string;
     privateKey: string;
+    mail: string;
   }
 }

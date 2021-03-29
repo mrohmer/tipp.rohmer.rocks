@@ -1,4 +1,5 @@
 import { timestamp, files, shell } from '@sapper/service-worker';
+import {environment} from './environments/environment';
 
 const ASSETS = `cache${timestamp}`;
 
@@ -85,17 +86,31 @@ self.addEventListener('fetch', (event: FetchEvent) => {
 	}
 });
 self.addEventListener('push', e => {
-	const {title, body, icon, actions, data} = e.data.json();
-	const options = {
-		body,
-		icon: icon ?? '/favicon.png',
-		vibrate: [100, 50, 100],
-		data,
-		actions,
-	};
-	e.waitUntil(
-		(self as any).registration.showNotification(title, options)
-	);
+	const {type, payload} = e.data.json();
+
+	switch (type) {
+		case 'POINTS_UPDATED':
+			const options = {
+				body: 'Sieh jetzt nach an welcher Position du stehst.',
+				icon: '/favicon.png',
+				vibrate: [100, 50, 100],
+				data: {
+					type,
+					payload,
+					path: `/${payload.league.key}/standings`,
+				},
+			};
+
+			const leagueAddition = environment.leagues.length > 1 ?
+				` für ${payload.league.name}` :
+				'';
+
+			e.waitUntil(
+				(self as any).registration.showNotification(`Du hast ${payload.difference}${leagueAddition} Punkte erhalten!`, options)
+			);
+			return;
+	}
+
 });
 
 self.addEventListener('notificationclick', e => {

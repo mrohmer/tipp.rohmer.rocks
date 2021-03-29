@@ -1,1 +1,1 @@
-export type CronTupel = [string, () => void|Promise<void>];
+export type CronTupel = [string, () => void|Promise<void>] | [string, () => void|Promise<void>, boolean];

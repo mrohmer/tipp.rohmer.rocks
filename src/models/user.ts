@@ -12,9 +12,10 @@ export class User {
   @Column()
   notificationsEnabled: boolean;
   @Column()
-  notificationEndpoints: string[];
+  notificationSubscriptions: Subscription[];
   @Column()
   points: Points = {};
 }
 
 export type Points = Partial<Record<LeagueId, Record<string, number>>>
+export type Subscription = ({endpoint: string} & Record<string, any>);

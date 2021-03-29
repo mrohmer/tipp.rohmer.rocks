@@ -1,11 +1,12 @@
 import cron from 'node-cron';
 import calcPoints from './calc-points';
+import sendNotification from './send-notification';
 
 const init = () => {
-  const crons = [calcPoints];
+  const crons = [calcPoints, sendNotification];
 
-  crons.forEach(([pattern, func]) => {
-    cron.schedule(pattern, async () => {
+  crons.forEach(async ([pattern, func, instant]) => {
+    const callback = async () => {
       try {
         const result = func();
         if (result instanceof Promise) {
@@ -14,7 +15,11 @@ const init = () => {
       } catch (e) {
         console.error(e);
       }
-    })
+    }
+    if (instant) {
+      await callback();
+    }
+    cron.schedule(pattern, callback)
   })
 }
 

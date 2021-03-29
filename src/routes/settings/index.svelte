@@ -24,14 +24,14 @@
 
   export let notifications: boolean;
 
-  async function updateNotificationSubscription(enabled: boolean, endpoint: string) {
+  async function updateNotificationSubscription(enabled: boolean, subscription) {
     try {
       const {enabled: result} = await fetch(`/settings/notification`, {
         method: enabled ? 'POST' : 'DELETE',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({enabled, endpoint}),
+        body: JSON.stringify({enabled, subscription}),
       });
       notifications = result;
     } catch (e) {
@@ -47,7 +47,7 @@
 
 <div class="settings">
     <NofiticationSetting enabled={notifications}
-                         on:enable={async ({detail: endpoint}) => updateNotificationSubscription(true, endpoint)}
-                         on:disable={async ({detail: endpoint}) => updateNotificationSubscription(false, endpoint)} />
+                         on:enable={async ({detail: subscription}) => updateNotificationSubscription(true, subscription)}
+                         on:disable={async ({detail: subscription}) => updateNotificationSubscription(false, subscription)} />
 </div>
 

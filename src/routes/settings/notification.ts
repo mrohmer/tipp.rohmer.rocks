@@ -7,16 +7,16 @@ export const get = async (req, res) => {
 };
 export const post = async (req, res) => {
   const {body} = req;
-  const {endpoint} = body;
+  const {subscription} = body;
 
 
   const {repo, user: dbUser} = await getDbUser(req);
 
-  if (!dbUser.notificationEndpoints) {
-    dbUser.notificationEndpoints = [];
+  if (!dbUser.notificationSubscriptions) {
+    dbUser.notificationSubscriptions = [];
   }
-  if (!dbUser.notificationEndpoints.includes(endpoint)) {
-    dbUser.notificationEndpoints.push(endpoint);
+  if (!dbUser.notificationSubscriptions.find(sub => sub.endpoint === subscription.endpoint)) {
+    dbUser.notificationSubscriptions.push(subscription);
   }
 
   dbUser.notificationsEnabled = true;
@@ -26,18 +26,18 @@ export const post = async (req, res) => {
 };
 export const del = async (req, res) => {
   const {body} = req;
-  const {enabled, endpoint} = body;
+  const {enabled, subscription} = body;
 
 
   const {repo, user: dbUser} = await getDbUser(req);
 
-  if (dbUser.notificationEndpoints?.length) {
-    dbUser.notificationEndpoints = dbUser.notificationEndpoints.filter(
-      e => e !== endpoint,
+  if (subscription && dbUser.notificationSubscriptions?.length) {
+    dbUser.notificationSubscriptions = dbUser.notificationSubscriptions.filter(
+      sub => sub.endpoint !== subscription.endpoint,
     );
   }
 
-  dbUser.notificationsEnabled = enabled && !!dbUser.notificationEndpoints?.length;
+  dbUser.notificationsEnabled = enabled && !!dbUser.notificationSubscriptions?.length;
   await repo.save(dbUser);
 
   res.end(JSON.stringify({enabled: dbUser.notificationsEnabled}));

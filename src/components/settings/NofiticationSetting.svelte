@@ -45,7 +45,7 @@
       if (enabled) {
         try {
           const subscription = await getSubscription();
-          dispatch('enable', subscription.endpoint);
+          dispatch('enable', subscription);
         } catch (e) {
           enabled = false;
           supported = false;
@@ -53,16 +53,15 @@
         }
       }
     } else {
-      let endpoint: string;
+      let subscription: any;
       if (status === 'granted') {
         try {
-          const subscription = await getSubscription();
-          endpoint = subscription?.endpoint;
+          subscription = await getSubscription();
         } catch (e) {
           console.error(e);
         }
       }
-      dispatch('disable', endpoint);
+      dispatch('disable', subscription);
     }
 
     requestingPermission = false;

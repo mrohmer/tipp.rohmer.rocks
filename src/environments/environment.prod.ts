@@ -23,5 +23,6 @@ export const environment: Environment = {
   push: {
     publicKey: '__PUSH_PUBLIC__',
     privateKey: '__PUSH_PRIVATE__',
+    mail: '__PUSH_MAIL__',
   },
 };
