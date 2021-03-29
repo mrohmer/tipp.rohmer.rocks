@@ -4,22 +4,28 @@ export enum LeagueKey {
   BUNDESLIGA = 'bl',
   BUNDESLIGA2 = 'bl2',
 }
+export enum LeagueId {
+  EM_U21 = '124',
+  EM = '107',
+  BUNDESLIGA = '1',
+  BUNDESLIGA2 = '2',
+}
 
-export const leagueMap: Record<LeagueKey, Record<'id'|'name', string>> = {
+export const leagueMap: Record<LeagueKey, { id: LeagueId, name: string }> = {
   [LeagueKey.EM_U21]: {
-    id: '124',
+    id: LeagueId.EM_U21,
     name: 'U21 EM',
   },
   [LeagueKey.EM]: {
-    id: '107',
+    id: LeagueId.EM,
     name: 'EM',
   },
   [LeagueKey.BUNDESLIGA]: {
-    id: '1',
+    id: LeagueId.BUNDESLIGA,
     name: 'Bundeliga'
   },
   [LeagueKey.BUNDESLIGA2]: {
-    id: '2',
+    id: LeagueId.BUNDESLIGA2,
     name: '2. Bundeliga'
   },
 };

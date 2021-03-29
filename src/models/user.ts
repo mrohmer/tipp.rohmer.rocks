@@ -1,4 +1,5 @@
 import {Column, Entity, ObjectIdColumn} from "typeorm";
+import type {LeagueId} from './kicker/leagues';
 
 @Entity()
 export class User {
@@ -13,5 +14,7 @@ export class User {
   @Column()
   notificationEndpoints: string[];
   @Column()
-  points: Record<string, Record<string, number>> = {};
+  points: Points = {};
 }
+
+export type Points = Partial<Record<LeagueId, Record<string, number>>>

@@ -14,6 +14,7 @@ import {securedMiddleware} from './middlewares/auth';
 import {Tip} from './models/tip';
 import cron from './crons';
 import {RatedMatch} from './models/rated-match';
+import {Notification} from './models/notification';
 
 const {PORT, NODE_ENV} = process.env;
 const dev = NODE_ENV === 'development';
@@ -48,7 +49,8 @@ const app = polka(); // You can also use Express
     entities: [
       User,
       Tip,
-      RatedMatch
+      RatedMatch,
+      Notification,
     ],
   })
 
