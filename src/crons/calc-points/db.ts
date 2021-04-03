@@ -17,8 +17,6 @@ const getConnection = () => {
   }
   return connection;
 };
-export const closeConnection = async () => {
-}
 export const getTipRepository = () => {
   if (!tipRepository) {
     tipRepository = getConnection().getRepository(Tip);
