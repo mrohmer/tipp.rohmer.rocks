@@ -1,9 +1,10 @@
 import cron from 'node-cron';
 import calcPoints from './calc-points';
 import sendNotification from './send-notification';
+import createReminder from './create-reminder';
 
 const init = () => {
-  const crons = [calcPoints, sendNotification];
+  const crons = [calcPoints, sendNotification, createReminder];
 
   crons.forEach(async ([pattern, func, instant]) => {
     const callback = async () => {

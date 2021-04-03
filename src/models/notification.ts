@@ -6,7 +6,7 @@ export class Notification {
   @ObjectIdColumn({ name: '_id', type: 'string' })
   id: string;
   @Column()
-  type: 'POINTS_UPDATED';
+  type: 'POINTS_UPDATED'|'REMINDER';
   @Column()
   payload: object;
   @Column()

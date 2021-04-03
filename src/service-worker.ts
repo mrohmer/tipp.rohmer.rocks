@@ -85,29 +85,49 @@ self.addEventListener('fetch', (event: FetchEvent) => {
 		);
 	}
 });
+const createPointsUpdatedNotification = async ({type, payload}) => {
+	const options = {
+		body: 'Sieh jetzt nach an welcher Position du stehst.',
+		icon: '/favicon.png',
+		vibrate: [100, 50, 100],
+		data: {
+			type,
+			payload,
+			path: `/${payload.league.key}/standings`,
+		},
+	};
+
+	const leagueAddition = environment.leagues.length > 1 ?
+		` für ${payload.league.name}` :
+		'';
+
+	await (self as any).registration.showNotification(`Du hast ${payload.difference}${leagueAddition} Punkte erhalten!`, options)
+};
+const createReminderNotification = async ({type, payload}) => {
+	const date = new Date(payload.date);
+	const dateStr = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
+	const options = {
+		body: `${payload.home} - ${payload.guest} startet um ${dateStr} Uhr`,
+		icon: '/favicon.png',
+		vibrate: [100, 50, 100],
+		data: {
+			type,
+			payload,
+			path: `/${payload.league}/match/${payload.matchId}`,
+		},
+	};
+
+	await (self as any).registration.showNotification(`Du musst noch tippen!`, options)
+};
 self.addEventListener('push', e => {
 	const {type, payload} = e.data.json();
 
 	switch (type) {
 		case 'POINTS_UPDATED':
-			const options = {
-				body: 'Sieh jetzt nach an welcher Position du stehst.',
-				icon: '/favicon.png',
-				vibrate: [100, 50, 100],
-				data: {
-					type,
-					payload,
-					path: `/${payload.league.key}/standings`,
-				},
-			};
-
-			const leagueAddition = environment.leagues.length > 1 ?
-				` für ${payload.league.name}` :
-				'';
-
-			e.waitUntil(
-				(self as any).registration.showNotification(`Du hast ${payload.difference}${leagueAddition} Punkte erhalten!`, options)
-			);
+			e.waitUntil(createPointsUpdatedNotification({type, payload}));
+			return;
+		case 'REMINDER':
+			e.waitUntil(createReminderNotification({type, payload}));
 			return;
 	}
 
