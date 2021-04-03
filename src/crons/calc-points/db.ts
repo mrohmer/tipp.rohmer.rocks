@@ -18,10 +18,6 @@ const getConnection = () => {
   return connection;
 };
 export const closeConnection = async () => {
-  if (connection) {
-    await connection.close();
-    connection = null;
-  }
 }
 export const getTipRepository = () => {
   if (!tipRepository) {

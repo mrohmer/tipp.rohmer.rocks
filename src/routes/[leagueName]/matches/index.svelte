@@ -41,6 +41,7 @@
   import {stores} from '@sapper/app';
   import MatchListItem from "../../../components/matches/MatchListItem.svelte";
   import Tip from "../../../components/matches/Tip.svelte";
+  import ListTip from "../../../components/matches/ListTip.svelte";
 
   const {page} = stores();
 
@@ -151,7 +152,7 @@
                         <MatchListItem {match}/>
                     </a>
                     {#if match.homeTeam.id !== '0' && match.guestTeam.id !== '0'}
-                        <Tip {match} leagueName={$page.params.leagueName}/>
+                        <ListTip {match} leagueName={$page.params.leagueName}/>
                     {/if}
                 </div>
             {/each}

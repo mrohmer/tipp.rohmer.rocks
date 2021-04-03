@@ -1,70 +1,20 @@
 <script lang="ts">
   import type {Match} from '../../models/kicker/match';
-  import {afterUpdate, onMount} from 'svelte';
+  import {createEventDispatcher} from 'svelte';
   import {Tip} from '../../models/tip';
-  import {Cached} from '../../decorators/cache';
-
-  async function updateTip(data: Tip): Promise<Tip> {
-    if (!dirty) {
-      return;
-    }
-    loading = true;
-
-    try {
-      await fetch(`/${leagueName}/match/${match.id}/tip`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({home: tip.home, guest: tip.guest}),
-      });
-      originalTip = JSON.parse(JSON.stringify(tip));
-    } catch (e) {
-      error = true;
-      console.log(e);
-    } finally {
-      loading = false;
-    }
-  }
-
-  @Cached('tip')
-  async function fetchTip(url: string): Promise<Tip> {
-    if (typeof fetch === 'undefined') {
-      return Promise.resolve(new Tip());
-    }
-    try {
-      const response = await fetch(url);
-      if (response.status === 200) {
-        return response.json();
-      }
-    } catch (e) {
-    }
-    return Promise.resolve(new Tip());
-  }
-
-  async function getData(lN: string, matchId: string) {
-    try {
-      console.log('after update');
-      tip = await fetchTip(`/${lN}/match/${matchId}/tip`)
-      originalTip = JSON.parse(JSON.stringify(tip));
-    } catch (e) {
-      console.log(e);
-      error = true;
-    } finally {
-      loading = false;
-    }
-  }
 
   export let match: Match;
-  export let leagueName: string;
   export let hasHeader = true;
 
-  let tip: Tip;
-  let originalTip: Tip;
-  let loading = true;
-  let error = false;
+  export let tip: Tip;
+  export let originalTip: Tip;
+  export let loading = false;
+  export let error = false;
+  export let editable = false;
+  export let anonymized = false;
 
-  $: getData(leagueName, match.id)
+  const dispatch = createEventDispatcher();
+
   $: dirty = tip && originalTip && (tip.home !== originalTip.home || tip.guest !== originalTip.guest)
 
 </script>
@@ -72,6 +22,8 @@
 <style type="text/scss">
   .tip {
     $this: &;
+    $backgroundColor: #181818;
+    $height: 40px;
 
     &__headline {
       text-align: center;
@@ -104,16 +56,17 @@
         display: flex;
         justify-content: center;
       }
+      line-height: $height;
     }
     &__number, &__separator {
       display: inline-block;
       vertical-align: bottom;
-      background: #181818;
+      background: $backgroundColor;
       color: white;
       font-size: 18px;
       text-align: center;
-      height: 40px;
-      line-height: 40px;
+      height: $height;
+      line-height: $height;
     }
     &__number {
       width: 28px;
@@ -135,7 +88,7 @@
       width: 4px;
     }
     &__submit {
-      height: 40px;
+      height: $height;
       margin-left: 5px;
       margin-right: -55px;
       border: none;
@@ -147,14 +100,24 @@
         background: #222;
       }
     }
+    &--anonymized {
+      #{$this}__content {
+        width: 60px;
+        background: $backgroundColor;
+      }
+      #{$this}__number {
+        filter: blur(3px);
+      }
+    }
   }
 </style>
 
 <div class="tip"
      class:tip--loading={loading}
      class:tip--error={error}
-     class:tip--tipable={!loading && !error && !('results' in match)}
-     class:tip--over={!loading && !error && 'results' in match}
+     class:tip--tipable={!loading && !error && !('results' in match || !editable)}
+     class:tip--over={!loading && !error && ('results' in match || !editable)}
+     class:tip--anonymized={anonymized}
 >
     {#if hasHeader}
         <div class="tip__headline">Tipp</div>
@@ -164,20 +127,20 @@
             loading...
         {:else if error}
             error 😭
-        {:else if 'results' in match}
+        {:else if 'results' in match || !editable}
             {#if tip.home === undefined}
                 kein Tipp 🙈
             {:else}
                 <div class="tip__number">
-                    {tip.home}
+                    {anonymized ? 'X' : tip.home}
                 </div>
                 <div class="tip__separator">:</div>
                 <div class="tip__number">
-                    {tip.guest}
+                    {anonymized ? 'X' : tip.guest}
                 </div>
             {/if}
         {:else}
-            <form on:submit={async () => updateTip(tip)}>
+            <form on:submit={() => dispatch('save', tip)}>
                 <div class="tip__number tip__number--input">
                     <input bind:value={tip.home} placeholder="-">
                 </div>

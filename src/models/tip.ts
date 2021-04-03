@@ -3,7 +3,7 @@ import {v4 as uuid} from 'uuid';
 
 @Entity()
 export class Tip {
-  @ObjectIdColumn({ name: '_id', type: 'string' })
+  @ObjectIdColumn({name: '_id', type: 'string'})
   id: string;
   @Column()
   matchId: string;
@@ -25,4 +25,11 @@ export class Tip {
   constructor() {
     this.id = uuid();
   }
+}
+
+export interface OthersTip {
+  home: number;
+  guest: number;
+  username: string;
+  anonymized: boolean;
 }
