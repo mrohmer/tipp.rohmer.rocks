@@ -19,3 +19,9 @@ export class User {
 
 export type Points = Partial<Record<LeagueId, Record<string, number>>>
 export type Subscription = ({endpoint: string} & Record<string, any>);
+export type Standings = StandingsItem[];
+export interface StandingsItem {
+  username: string;
+  self: boolean;
+  points: number;
+}
