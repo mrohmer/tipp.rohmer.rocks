@@ -8,6 +8,7 @@ import {getConnection} from 'typeorm';
 import {User} from '../../models/user';
 import {Tip} from '../../models/tip';
 import {Notification} from '../../models/notification';
+import ms from 'ms';
 
 const getRemindableGames = async (leagueId: string): Promise<Match[]> => {
   const leagueInfo = await KickerApiService.fetchLeagueInfo(leagueId);
@@ -18,9 +19,9 @@ const getRemindableGames = async (leagueId: string): Promise<Match[]> => {
       match => !('results' in match)
     );
 
-  const minute = 60 * 1000;
-  const offsetMax = 10 * minute;
-  const offsetMin = minute;
+  const offsetMax = ms('10m');
+  const offsetMin = ms('1m');
+
   return notStartedGames
     .filter(({date}) => {
       const obj = new Date(date);
