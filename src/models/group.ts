@@ -16,7 +16,7 @@ export class Group {
   async getUsers(): Promise<User[]> {
     const connections = await getConnection().getRepository(UserGroupConnection).find({
       where: {
-        groupId: this.id,
+        groupId: this.id.toString(),
       }
     });
 

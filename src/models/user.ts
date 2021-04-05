@@ -33,7 +33,7 @@ export class User {
     const groupIds = connections.map(({groupId}) => groupId);
 
     const groups = await getConnection().getRepository(Group).find();
-    return groups.filter(group => groupIds.includes(group.id));
+    return groups.filter(group => groupIds.includes(group.id.toString()));
   }
   getTip(matchId: string): Promise<Tip> {
     return getConnection().getRepository(Tip).findOne({
