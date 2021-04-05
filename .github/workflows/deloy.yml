@@ -31,7 +31,7 @@ jobs:
           PUSH_PUBLIC: ${{ secrets.PUSH_PUBLIC }}
           PUSH_PRIVATE: ${{ secrets.PUSH_PRIVATE }}
           PUSH_MAIL: ${{ secrets.PUSH_MAIL }}
-      - name: build
+      - name: mv env file
         run: mv src/environments/environment.prod.ts src/environments/environment.ts
       - name: build
         run: yarn build
@@ -62,7 +62,7 @@ jobs:
         with:
           switches: -avzr --delete
           path: __sapper__/build/
-          remote_path: /tmp/tipp.rohmer.rocks/${{ github.jon_id }}
+          remote_path: /tmp/tipp.rohmer.rocks/${{ github.job_id }}
           remote_host: ${{ secrets.DEPLOY_REMOTE_HOST }}
           remote_user: ${{ secrets.DEPLOY_REMOTE_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
@@ -74,5 +74,5 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             mkdir -p /var/www/vhosts/tipp.rohmer.rocks/app/
-            mv /tmp/tipp.rohmer.rocks/${{ github.jon_id }} /var/www/vhosts/tipp.rohmer.rocks/app/
+            mv /tmp/tipp.rohmer.rocks/${{ github.job_id }} /var/www/vhosts/tipp.rohmer.rocks/app/
             pm2 restart /var/www/vhosts/tipp.rohmer.rocks/app/ecosystem.config.js
