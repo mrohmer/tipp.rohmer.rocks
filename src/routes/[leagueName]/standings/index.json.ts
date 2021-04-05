@@ -2,7 +2,7 @@ import {leagueMap} from '../../../models/kicker/leagues';
 import {getConnection, Not} from 'typeorm';
 import {Standings, User} from '../../../models/user';
 import {getLeagueInfo} from '../index.json';
-import {environment} from '../../../environments/environment.local';
+import {environment} from '../../../environments/environment';
 
 export const get = async (req, res) => {
   const {leagueName} = req.params;

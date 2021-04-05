@@ -1,0 +1,73 @@
+name: DEPLOY
+#on:
+#  push:
+#    branches:
+#      - master
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          always-auth: true
+      - uses: bahmutov/npm-install@v1
+      - name: replace env vars
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["src/environments/environment.prod.ts"]'
+        env:
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          SESSION_PATH: ${{ secrets.SESSION_PATH }}
+          MONGO_DB_CONNECTION_STR: ${{ secrets.MONGO_DB_CONNECTION_STR }}
+          AUTH_DOMAIN: ${{ secrets.AUTH_DOMAIN }}
+          AUTH_ID: ${{ secrets.AUTH_ID }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          AUTH_CALLBACK_URL: ${{ secrets.AUTH_CALLBACK_URL }}
+          AUTH_LOGOUT_REDIRECT_URL: ${{ secrets.AUTH_LOGOUT_REDIRECT_URL }}
+          PUSH_PUBLIC: ${{ secrets.PUSH_PUBLIC }}
+          PUSH_PRIVATE: ${{ secrets.PUSH_PRIVATE }}
+          PUSH_MAIL: ${{ secrets.PUSH_MAIL }}
+      - name: mv env file
+        run: mv src/environments/environment.prod.ts src/environments/environment.ts
+      - name: build
+        run: yarn build
+      - name:
+        uses: actions/upload-artifact@master
+        with:
+          name: build
+          path: __sapper__/build/
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@master
+        with:
+          name: build
+          path: __sapper__/build/
+      - uses: bahmutov/npm-install@v1
+      - name: rsync deployments
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -avzr --delete --exclude '/.git/' --exclude '/src/' --exclude '/.github/' --exclude '/.gitignore' --exclude '/package.json' --exclude '/yarn.lock' --exclude '/tsconfig.json' --exclude '/webpack.config.js' --exclude '/workflows/'
+          path: /
+          remote_path: /tmp/tipp.rohmer.rocks/${{ github.run_id }}
+          remote_host: ${{ secrets.DEPLOY_REMOTE_HOST }}
+          remote_user: ${{ secrets.DEPLOY_REMOTE_USER }}
+          remote_key: ${{ secrets.DEPLOY_KEY }}
+      - name: exec on server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_REMOTE_HOST }}
+          username: ${{ secrets.DEPLOY_REMOTE_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            mkdir -p /var/www/vhosts/tipp.rohmer.rocks/app/
+            rsync -av --delete /tmp/tipp.rohmer.rocks/${{ github.run_id }}/ /var/www/vhosts/tipp.rohmer.rocks/app
+            pm2 restart /var/www/vhosts/tipp.rohmer.rocks/app/ecosystem.config.js --cwd "/var/www/vhosts/tipp.rohmer.rocks/app/"
+            pm2 save
+

@@ -1,4 +1,4 @@
-import {environment} from '../../environments/environment.local';
+import {environment} from '../../environments/environment';
 import {leagueMap} from '../../models/kicker/leagues';
 import type {CronTupel} from '../types';
 import {recalcUsersPoints} from './recalc-user';

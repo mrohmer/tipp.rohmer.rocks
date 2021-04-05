@@ -1,6 +1,6 @@
 <script lang="ts">
   import {leagueMap} from '../models/kicker/leagues';
-  import {environment} from '../environments/environment.local';
+  import {environment} from '../environments/environment';
 
   const leagueArray = Object
     .entries(leagueMap)
