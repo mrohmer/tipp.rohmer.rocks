@@ -1,8 +1,8 @@
 {
-	"background_color": "#ffffff",
+	"background_color": "#000000",
 	"theme_color": "#333333",
-	"name": "Tippspiel",
-	"short_name": "Tipp",
+	"name": "Tippspiel by MRohmer",
+	"short_name": "Tippspiel",
 	"display": "standalone",
 	"start_url": "/",
 	"icons": [
