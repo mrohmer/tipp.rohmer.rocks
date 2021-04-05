@@ -65,12 +65,12 @@ const app = polka(); // You can also use Express
         saveUninitialized: true,
         cookie: {
           maxAge: 2592000000,
-          secure: environment.production,
+          // secure: environment.production,
         },
         store: new FileStore({
           path: environment.session.path ?? `.sessions`,
         }),
-        proxy: environment.production,
+        // proxy: environment.production,
       }),
       passport.initialize(),
       passport.session(),
