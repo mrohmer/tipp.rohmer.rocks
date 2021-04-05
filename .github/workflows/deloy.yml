@@ -75,5 +75,5 @@ jobs:
           script: |
             mkdir -p /var/www/vhosts/tipp.rohmer.rocks/app/
             rsync -av --delete /tmp/tipp.rohmer.rocks/${{ github.run_id }}/ /var/www/vhosts/tipp.rohmer.rocks/app
-            pm2 restart /var/www/vhosts/tipp.rohmer.rocks/app/ecosystem.config.js
+            pm2 restart /var/www/vhosts/tipp.rohmer.rocks/app/ecosystem.config.js --cwd "/var/www/vhosts/tipp.rohmer.rocks/app/"
 
