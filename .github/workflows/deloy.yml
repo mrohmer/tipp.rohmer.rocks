@@ -53,7 +53,7 @@ jobs:
       - name: rsync deployments
         uses: burnett01/rsync-deployments@4.1
         with:
-          switches: -avzr --delete --exclude 'src/' '.github/' '.gitignore' 'package.json' 'yarn.lock' 'tsconfig.json' 'webpack.config.js'
+          switches: -avzr --delete --exclude '/src/' --exclude '/.github/' --exclude '/.gitignore' --exclude '/package.json' --exclude '/yarn.lock' --exclude '/tsconfig.json' --exclude '/webpack.config.js' --exclude '/workflows/'
           path: /
           remote_path: /tmp/tipp.rohmer.rocks/${{ github.run_id }}
           remote_host: ${{ secrets.DEPLOY_REMOTE_HOST }}
