@@ -9,52 +9,61 @@
   ;
 
 
-
   export let segment: string;
 </script>
 
 <style type="text/scss">
   @use "../styles/variables" as var;
-    nav {
-        border-bottom: 1px solid rgba(255, 62, 0, 0.1);
-        font-weight: 300;
-        padding: 0 1em;
-        background: #111;
-        color: #bbb;
-      ul {
-        margin: 0;
-        padding: 0;
-        &::after {
-          content: '';
-          display: block;
-          clear: both;
-        }
-        li {
-          display: block;
-          float: left;
 
-          a {
-            text-decoration: none;
-            padding: 1em 0.5em;
-            display: block;
+  nav {
+    border-bottom: 1px solid rgba(255, 62, 0, 0.1);
+    font-weight: 300;
+    padding: 0 1em;
+    background: #111;
+    color: #bbb;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 1000;
 
-            &[aria-current] {
-              position: relative;
-              display: inline-block;
-              &::after {
-                position: absolute;
-                content: '';
-                width: calc(100% - 1em);
-                height: 2px;
-                background-color: var.$primaryColor;
-                display: block;
-                bottom: -1px;
-              }
+    ul {
+      margin: 0;
+      padding: 0;
+
+      &::after {
+        content: '';
+        display: block;
+        clear: both;
+      }
+
+      li {
+        display: block;
+        float: left;
+
+        a {
+          text-decoration: none;
+          padding: 1em 0.5em;
+          display: block;
+
+          &[aria-current] {
+            position: relative;
+            display: inline-block;
+
+            &::after {
+              position: absolute;
+              content: '';
+              width: calc(100% - 1em);
+              height: 2px;
+              background-color: var.$primaryColor;
+              display: block;
+              bottom: -1px;
             }
           }
         }
       }
     }
+  }
 </style>
 
 <nav>
@@ -65,7 +74,7 @@
                     Wettbewerbe
                 </a>
             </li>
-            {#if  Object.keys(leagueMap).includes(segment)}
+            {#if Object.keys(leagueMap).includes(segment)}
                 <li>
                     <a href="/{segment}/matches" aria-current="page">
                         {leagueMap[segment].name}
@@ -74,7 +83,8 @@
             {/if}
         {:else if leagueArray.length === 1}
             <li>
-                <a href="/{leagueArray[0].key}/matches" aria-current="{segment === leagueArray[0].key ? 'page' : undefined}">
+                <a href="/{leagueArray[0].key}/matches"
+                   aria-current="{segment === leagueArray[0].key ? 'page' : undefined}">
                     {leagueArray[0].value.name}
                 </a>
             </li>

@@ -14,7 +14,7 @@
 		max-width: 56em;
 		background: black;
 		padding: 2em;
-		margin: 0 auto;
+		margin: 57px auto 0;
 		box-sizing: border-box;
 		color: #bbb;
 		min-height: calc(100vh - 57px);
