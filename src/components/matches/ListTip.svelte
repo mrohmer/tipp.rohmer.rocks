@@ -10,6 +10,7 @@
 
     try {
       await updateTipUtil(leagueName, match, data);
+      tip = data;
     } catch (e) {
       error = true;
       console.log(e);
@@ -56,4 +57,4 @@
 
 </script>
 
-<Tip hasHeader={true} editable={true} {loading} {error} {match} {tip} originalTip={tip && JSON.parse(JSON.stringify(tip))} on:save={async tip => updateTip(tip)} />
+<Tip hasHeader={true} editable={true} {loading} {error} {match} {tip} originalTip={tip && JSON.parse(JSON.stringify(tip))} on:save={async ({detail}) => updateTip(detail)} />
