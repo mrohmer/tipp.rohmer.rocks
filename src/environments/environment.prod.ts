@@ -4,25 +4,26 @@ import {LeagueKey} from '../models/kicker/leagues';
 export const environment: Environment = {
   production: true,
   session: {
-    secret: '__SESSION_SECRET__',
+    secret: '#{SESSION_SECRET}#',
+    path: '#{SESSION_PATH}#',
   },
   db: {
-    URI: '__MONGO_DB_CONNECTION_STR__',
+    URI: '#{MONGO_DB_CONNECTION_STR}#',
   },
   auth: {
-    domain: '__AUTH_DOMAIN__',
-    clientID: '__AUTH_ID__',
-    clientSecret: '__AUTH_SECRET__',
-    callbackURL: '__AUTH_CALLBACK_URL__',
-    logoutRedirect: '__AUTH_LOGOUT_REDIRECT_URL__',
+    domain: '#{AUTH_DOMAIN}#',
+    clientID: '#{AUTH_ID}#',
+    clientSecret: '#{AUTH_SECRET}#',
+    callbackURL: '#{AUTH_CALLBACK_URL}#',
+    logoutRedirect: '#{AUTH_LOGOUT_REDIRECT_URL}#',
   },
   leagues: [
     LeagueKey.EM,
     LeagueKey.EM_U21,
   ],
   push: {
-    publicKey: '__PUSH_PUBLIC__',
-    privateKey: '__PUSH_PRIVATE__',
-    mail: '__PUSH_MAIL__',
+    publicKey: '#{PUSH_PUBLIC}#',
+    privateKey: '#{PUSH_PRIVATE}#',
+    mail: '#{PUSH_MAIL}#',
   },
 };

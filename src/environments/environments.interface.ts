@@ -5,6 +5,7 @@ export interface Environment {
   overrideSeason?: string;
   session: {
     secret: string;
+    path?: string;
   };
   db: {
     URI: string;

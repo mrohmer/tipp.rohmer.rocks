@@ -68,8 +68,8 @@ const app = polka(); // You can also use Express
           secure: environment.production,
         },
         store: new FileStore({
-          path: `.sessions`
-        })
+          path: environment.session.path ?? `.sessions`,
+        }),
       }),
       passport.initialize(),
       passport.session(),
