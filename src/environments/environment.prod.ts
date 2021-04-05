@@ -18,7 +18,6 @@ export const environment: Environment = {
     logoutRedirect: '#{AUTH_LOGOUT_REDIRECT_URL}#',
   },
   leagues: [
-    LeagueKey.EM,
     LeagueKey.EM_U21,
   ],
   push: {
