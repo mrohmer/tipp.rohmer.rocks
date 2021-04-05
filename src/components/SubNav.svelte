@@ -11,6 +11,7 @@
     left: 0;
     top: 57px;
     right: 0;
+    z-index: 999;
 
     ul {
       margin: 0;
