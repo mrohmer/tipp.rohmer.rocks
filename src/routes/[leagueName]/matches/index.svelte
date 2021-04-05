@@ -42,6 +42,7 @@
   import MatchListItem from "../../../components/matches/MatchListItem.svelte";
   import Tip from "../../../components/matches/Tip.svelte";
   import ListTip from "../../../components/matches/ListTip.svelte";
+  import SlideableNavigation from "../../../components/SlideableNavigation.svelte";
 
   const {page} = stores();
 
@@ -93,20 +94,6 @@
 </script>
 
 <style type="text/scss">
-  .gameday-nav {
-    display: flex;
-
-    &__link {
-      width: 50px;
-      text-align: center;
-    }
-
-    &__title {
-      flex-grow: 1;
-      text-align: center;
-    }
-  }
-
   .match-list-date {
     margin-bottom: 25px;
     &__headline {
@@ -124,38 +111,30 @@
 </style>
 
 {#if gameday}
-    <div class="gameday-nav">
-        <div class="gameday-nav__link">
-            {#if previousGamedayId}
-                <a href="{$page.params.leagueName}/matches/?gamedayId={previousGamedayId}">prev</a>
-            {/if}
-        </div>
-        <div class="gameday-nav__title">
-            <h2>{gameday.title}</h2>
-        </div>
-        <div class="gameday-nav__link">
-            {#if nextGamedayId}
-                <a href="{$page.params.leagueName}/matches/?gamedayId={nextGamedayId}">next</a>
-            {/if}
-        </div>
-    </div>
-    {#each matchesByDate as {date, ms}}
-        <div class="match-list-date">
-            <h3 class="match-list-date__headline">
-                {date}
-            </h3>
-            {#each ms as match}
-                <div class="match-item">
-                    <a href="{$page.params.leagueName}/match/{match.id}"
-                       class="match-list-link"
-                    >
-                        <MatchListItem {match}/>
-                    </a>
-                    {#if match.homeTeam.id !== '0' && match.guestTeam.id !== '0'}
-                        <ListTip {match} leagueName={$page.params.leagueName}/>
-                    {/if}
-                </div>
-            {/each}
-        </div>
-    {/each}
+    <SlideableNavigation
+            linkLeft="{previousGamedayId ? `${$page.params.leagueName}/matches/?gamedayId=${previousGamedayId}` : null}"
+            linkRight="{nextGamedayId ? `${$page.params.leagueName}/matches/?gamedayId=${nextGamedayId}` : null}"
+    >
+        <h2 slot="header">{gameday.title}</h2>
+
+        {#each matchesByDate as {date, ms}}
+            <div class="match-list-date">
+                <h3 class="match-list-date__headline">
+                    {date}
+                </h3>
+                {#each ms as match}
+                    <div class="match-item">
+                        <a href="{$page.params.leagueName}/match/{match.id}"
+                           class="match-list-link"
+                        >
+                            <MatchListItem {match}/>
+                        </a>
+                        {#if match.homeTeam.id !== '0' && match.guestTeam.id !== '0'}
+                            <ListTip {match} leagueName={$page.params.leagueName}/>
+                        {/if}
+                    </div>
+                {/each}
+            </div>
+        {/each}
+    </SlideableNavigation>
 {/if}
