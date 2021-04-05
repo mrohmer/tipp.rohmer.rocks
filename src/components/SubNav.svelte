@@ -7,9 +7,9 @@
     padding: 0 1em;
     background: #1B1B1B;
     color: #bbb;
-    position: absolute;
+    position: fixed;
     left: 0;
-    top: 0;
+    top: 57px;
     right: 0;
 
     ul {
