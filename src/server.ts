@@ -15,6 +15,8 @@ import {Tip} from './models/tip';
 import cron from './crons';
 import {RatedMatch} from './models/rated-match';
 import {Notification} from './models/notification';
+import {Group} from './models/group';
+import {UserGroupConnection} from './models/user-group-connection';
 
 const {PORT, NODE_ENV} = process.env;
 const dev = NODE_ENV === 'development';
@@ -51,6 +53,8 @@ const app = polka(); // You can also use Express
       Tip,
       RatedMatch,
       Notification,
+      Group,
+      UserGroupConnection,
     ],
   })
 
