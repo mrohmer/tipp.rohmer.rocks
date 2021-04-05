@@ -1,7 +1,7 @@
 import {leagueMap} from '../../../models/kicker/leagues';
 import {getMatchInfo} from '../../../services/kicker-api.service';
 import type {Match} from '../../../models/kicker/match';
-import {environment} from '../../../environments/environment.local';
+import {environment} from '../../../environments/environment';
 import type {LeagueKey} from '../../../models/kicker/leagues';
 
 export const resolveMatch = async (leagueName: LeagueKey, matchId: string): Promise<Match> => {

@@ -18,7 +18,7 @@ jobs:
       - name: replace env vars
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["scr/environments/environment.prod.ts"]'
+          files: '["src/environments/environment.prod.ts"]'
         env:
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           SESSION_PATH: ${{ secrets.SESSION_PATH }}
@@ -31,6 +31,8 @@ jobs:
           PUSH_PUBLIC: ${{ secrets.PUSH_PUBLIC }}
           PUSH_PRIVATE: ${{ secrets.PUSH_PRIVATE }}
           PUSH_MAIL: ${{ secrets.PUSH_MAIL }}
+      - name: build
+        run: mv src/environments/environment.prod.ts src/environments/environment.ts
       - name: build
         run: yarn build
       - name:
