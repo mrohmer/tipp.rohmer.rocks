@@ -40,28 +40,21 @@ jobs:
         with:
           name: build
           path: __sapper__/build/
-      - name:
-        uses: actions/upload-artifact@master
-        with:
-          name: ecosystem-file
-          path: ecosystem.config.js
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: actions/download-artifact@master
         with:
           name: build
           path: __sapper__/build/
-      - uses: actions/download-artifact@master
-        with:
-          name: ecosystem-file
-          path: __sapper__/build/
+      - uses: bahmutov/npm-install@v1
       - name: rsync deployments
         uses: burnett01/rsync-deployments@4.1
         with:
-          switches: -avzr --delete
-          path: __sapper__/build/
+          switches: -avzr --delete --exclude 'src/' '.github/' '.gitignore' 'package.json' 'yarn.lock' 'tsconfig.json' 'webpack.config.js'
+          path: /
           remote_path: /tmp/tipp.rohmer.rocks/${{ github.run_id }}
           remote_host: ${{ secrets.DEPLOY_REMOTE_HOST }}
           remote_user: ${{ secrets.DEPLOY_REMOTE_USER }}
