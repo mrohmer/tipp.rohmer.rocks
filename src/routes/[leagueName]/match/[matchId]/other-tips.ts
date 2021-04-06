@@ -3,9 +3,6 @@ import {getConnection, Not} from 'typeorm';
 import type {OthersTip} from '../../../../models/tip';
 import {User} from '../../../../models/user';
 
-// email|6050ee881febfddccc12eed8
-// email|6050edb81febfddccce49e06
-
 const getOtherUsers = async (user: User): Promise<User[]> => {
   const groups = await user.getGroups();
 
