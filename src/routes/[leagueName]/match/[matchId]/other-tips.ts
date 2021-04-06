@@ -15,10 +15,6 @@ const getOtherUsers = async (user: User): Promise<User[]> => {
 
   let users = ([] as User[]).concat(...users2Dim)
 
-  if (!users.length) {
-    users = await getConnection().getRepository(User).find()
-  }
-
   return users
     .filter(item => item.foreignId !== user.foreignId)
     .filter((item, index, array) => index === array.findIndex(i => i.id === item.id))
