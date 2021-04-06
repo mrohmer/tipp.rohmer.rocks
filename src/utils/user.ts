@@ -17,3 +17,9 @@ export const getDbUser = async (req) => {
 
   return {repo, user: dbUser};
 }
+export const usersArrayUnique = (arr: User[]): User[] => {
+  console.log(arr.map(({id}) => id)
+    .map((item, index, array) => array.findIndex(i => i.toString() === item.toString())));
+  return arr
+    .filter((item, index, array) => index === array.findIndex(i => i.id.toString() === item.id.toString()))
+}
