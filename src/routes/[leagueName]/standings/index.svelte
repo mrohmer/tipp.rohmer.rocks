@@ -1,8 +1,8 @@
 <script lang="ts" context="module">
   import polka from 'polka';
-  import type {Standings} from '../../../models/user';
+  import {StandingsByGroup} from '../../../models/user';
 
-  async function getStandings(leagueName: string): Promise<Standings> {
+  async function getStandings(leagueName: string): Promise<StandingsByGroup[]> {
     const res = await this.fetch(`/${leagueName}/standings.json`);
 
     if (res.status === 200) {
@@ -12,12 +12,18 @@
     }
   }
 
-  export async function preload({params}: polka.Request): Promise<{ standings: Standings }> {
+  export async function preload({params, query}: polka.Request): Promise<{ standingsByGroups: StandingsByGroup[] }> {
     const {leagueName} = params;
 
     try {
-      const standings = await getStandings.call(this, leagueName);
-      return {standings};
+      const standingsByGroups = await getStandings.call(this, leagueName);
+
+      if (query.group && !standingsByGroups.find(group => group.id === query.group)) {
+        this.error(404, 'GroupId not found');
+        return;
+      }
+
+      return {standingsByGroups};
     } catch (e) {
       this.error(e.status, e.message);
     }
@@ -25,7 +31,16 @@
 </script>
 
 <script lang="ts">
-  export let standings: Standings;
+  import SlideableNavigation from "../../../components/SlideableNavigation.svelte";
+  import {stores} from '@sapper/app';
+
+  export let standingsByGroups: StandingsByGroup[];
+  const {page} = stores();
+
+  $: index = standingsByGroups && $page.query.group ? standingsByGroups.findIndex(group => group.id === $page.query.group) : 0;
+  $: standings = standingsByGroups ? standingsByGroups[index] : null;
+  $: previousGroup = standingsByGroups && standingsByGroups.length && index > 0 ? standingsByGroups[index - 1] : null;
+  $: nextGroup = standingsByGroups && (standingsByGroups.length - 1 > index) ? standingsByGroups[index + 1] : null;
 </script>
 
 <style type="text/scss">
@@ -69,33 +84,47 @@
   }
 </style>
 
-<div class="standings">
-
-    <div class="standings__row standings__row--header"
+{#if !standings}
+    loading...
+{:else if index < 0}
+    error... 😭
+{:else }
+    <SlideableNavigation hasHeader={standingsByGroups.length > 1}
+                         linkLeft="{previousGroup ? `${$page.params.leagueName}/standings${previousGroup.id ? `?group=${previousGroup.id}` : ''}` : null}"
+                         tooltipLeft="{previousGroup ? previousGroup.title : null}"
+                         linkRight="{nextGroup ? `${$page.params.leagueName}/standings?group=${nextGroup.id}` : null}"
+                         tooltipRight="{nextGroup ? nextGroup.title : null}"
     >
-        <div class="standings__col standings__col--position">
-            Pos.
-        </div>
-        <div class="standings__col standings__col--name">
-            Name
-        </div>
-        <div class="standings__col standings__col--points">
-            Punkte
-        </div>
-    </div>
-    {#each standings as item, i}
-        <div class="standings__row"
-             class:standings__row--self={item.self}
-        >
-            <div class="standings__col standings__col--position">
-                {i + 1}.
+        <h2 slot="header">{standings.title}</h2>
+        <div class="standings">
+            <div class="standings__row standings__row--header"
+            >
+                <div class="standings__col standings__col--position">
+                    Pos.
+                </div>
+                <div class="standings__col standings__col--name">
+                    Name
+                </div>
+                <div class="standings__col standings__col--points">
+                    Punkte
+                </div>
             </div>
-            <div class="standings__col standings__col--name">
-                {item.username}
-            </div>
-            <div class="standings__col standings__col--points">
-                {item.points}
-            </div>
+            {#each standings.standings as item, i}
+                <div class="standings__row"
+                     class:standings__row--self={item.self}
+                >
+                    <div class="standings__col standings__col--position">
+                        {i + 1}.
+                    </div>
+                    <div class="standings__col standings__col--name">
+                        {item.username}
+                    </div>
+                    <div class="standings__col standings__col--points">
+                        {item.points}
+                    </div>
+                </div>
+            {/each}
         </div>
-    {/each}
-</div>
+
+    </SlideableNavigation>
+{/if}

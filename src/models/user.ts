@@ -53,3 +53,8 @@ export interface StandingsItem {
   self: boolean;
   points: number;
 }
+export interface StandingsByGroup {
+  id?: string;
+  title: string;
+  standings: Standings;
+}
