@@ -27,6 +27,7 @@ export class Group {
     const userIds = connections.map(({userId}) => userId);
 
     const users = await getConnection().getRepository(User).find();
-    return users.filter(user => userIds.includes(user.foreignId));
+    return users
+      .filter(user => !!user && userIds.includes(user.foreignId));
   }
 }
