@@ -3,7 +3,7 @@ import {v4 as uuid} from 'uuid';
 import {User} from './user';
 import {UserGroupConnection} from './user-group-connection';
 
-@Entity()
+@Entity('group')
 export class Group {
   @ObjectIdColumn({ name: '_id', type: 'string' })
   id: string;

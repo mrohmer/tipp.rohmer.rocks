@@ -56,6 +56,7 @@ const app = polka(); // You can also use Express
       Group,
       UserGroupConnection,
     ],
+    entityPrefix: environment.production ? 'prod_' : null, // pay attention on this prefix
   })
 
   cron();

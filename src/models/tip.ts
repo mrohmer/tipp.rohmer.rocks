@@ -1,7 +1,7 @@
 import {Column, Entity, ObjectIdColumn} from 'typeorm';
 import {v4 as uuid} from 'uuid';
 
-@Entity()
+@Entity('tip')
 export class Tip {
   @ObjectIdColumn({name: '_id', type: 'string'})
   id: string;

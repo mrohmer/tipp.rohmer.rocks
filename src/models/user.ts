@@ -4,7 +4,7 @@ import {UserGroupConnection} from './user-group-connection';
 import {Group} from './group';
 import {Tip} from './tip';
 
-@Entity()
+@Entity('user')
 export class User {
   @ObjectIdColumn({ name: '_id', type: 'string' })
   id: string;
