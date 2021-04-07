@@ -35,9 +35,11 @@ export const get = async (req, res) => {
   });
 
   const otherUsers = await getOtherUsers(user);
-  const tips = await Promise.all(
+  const tips = (await Promise.all(
     otherUsers.map(user => user.getTip(matchId)),
-  );
+  ))
+    .filter(tip => !!tip)
+  ;
 
   const anonymized = match.completed !== '1';
   let mappedTips: OthersTip[] = [];
