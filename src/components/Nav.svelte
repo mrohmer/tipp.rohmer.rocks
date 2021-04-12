@@ -1,6 +1,7 @@
 <script lang="ts">
   import {leagueMap} from '../models/kicker/leagues';
   import {environment} from '../environments/environment';
+  import Icon from "./Icon.svelte";
 
   const leagueArray = Object
     .entries(leagueMap)
@@ -30,6 +31,7 @@
     ul {
       margin: 0;
       padding: 0;
+      display: flex;
 
       &::after {
         content: '';
@@ -40,6 +42,13 @@
       li {
         display: block;
         float: left;
+
+        &.spacer {
+          flex-grow: 2;
+        }
+        &.icon {
+          padding: 0 0.25em;
+        }
 
         a {
           text-decoration: none;
@@ -94,14 +103,15 @@
                 Regeln
             </a>
         </li>
-        <li>
+        <li class="spacer"></li>
+        <li class="icon">
             <a href="/settings" aria-current="{segment === 'settings' ? 'page' : undefined}">
-                Einstellungen
+                <Icon>cog</Icon>
             </a>
         </li>
-        <li>
+        <li class="icon">
             <a href="/auth/logout">
-                logout
+                <Icon>sign-out-alt</Icon>
             </a>
         </li>
     </ul>

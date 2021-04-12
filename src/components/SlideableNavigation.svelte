@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from "./Icon.svelte";
     export let linkLeft: string;
     export let tooltipLeft: string;
     export let tooltipRight: string;
@@ -13,6 +14,13 @@
       &__link {
         width: 50px;
         text-align: center;
+
+        a {
+          display: block;
+          width: 100%;
+          padding: 5px;
+          box-sizing: border-box;
+        }
       }
 
       &__title {
@@ -25,7 +33,9 @@
     <div class="header">
         <div class="header__link">
             {#if linkLeft}
-                <a href="{linkLeft}" title="{tooltipLeft}">prev</a>
+                <a href="{linkLeft}" title="{tooltipLeft}">
+                    <Icon>arrow-left</Icon>
+                </a>
             {/if}
         </div>
         <div class="header__title">
@@ -33,7 +43,8 @@
         </div>
         <div class="header__link">
             {#if linkRight}
-                <a href="{linkRight}" title="{tooltipRight}">next</a>
+                <a href="{linkRight}" title="{tooltipRight}">
+                    <Icon>arrow-right</Icon></a>
             {/if}
         </div>
     </div>
