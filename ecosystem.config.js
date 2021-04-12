@@ -1,5 +1,3 @@
-import {LeagueKey} from "./src/models/kicker/leagues";
-
 module.exports = {
   apps: [
     {
