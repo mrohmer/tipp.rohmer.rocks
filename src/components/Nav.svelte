@@ -90,6 +90,11 @@
             </li>
         {/if}
         <li>
+            <a href="/rules" aria-current="{segment === 'rules' ? 'page' : undefined}">
+                Regeln
+            </a>
+        </li>
+        <li>
             <a href="/settings" aria-current="{segment === 'settings' ? 'page' : undefined}">
                 Einstellungen
             </a>
