@@ -33,11 +33,16 @@ jobs:
         run: mv src/environments/environment.prod.ts src/environments/environment.ts
       - name: build
         run: yarn build
-      - name:
+      - name: upload build artifact
         uses: actions/upload-artifact@master
         with:
           name: build
           path: __sapper__/build/
+      - name: upload ecosystem file artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: ecosystem-file
+          path: ecosystem.config.js
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -47,6 +52,9 @@ jobs:
         with:
           name: build
           path: __sapper__/build/
+      - uses: actions/download-artifact@master
+        with:
+          name: ecosystem-file
       - uses: bahmutov/npm-install@v1
       - name: rsync deployments
         uses: burnett01/rsync-deployments@4.1
