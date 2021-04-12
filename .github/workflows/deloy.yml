@@ -16,7 +16,7 @@ jobs:
       - name: replace env vars
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["src/environments/environment.prod.ts"]'
+          files: '["ecosystem.config.js", "src/environments/environment.prod.ts"]'
         env:
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           SESSION_PATH: ${{ secrets.SESSION_PATH }}
