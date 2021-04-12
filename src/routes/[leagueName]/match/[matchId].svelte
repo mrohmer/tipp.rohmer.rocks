@@ -65,6 +65,7 @@
   import TipTable from "../../../components/matches/TipTable.svelte";
   import type {Tip} from '../../../models/tip';
   import {updateTip as updateTipUtil} from '../../../utils/update-tip';
+  import Icon from '../../../components/Icon.svelte';
 
   async function updateTip(data: TipModel) {
     console.log(data);
@@ -101,7 +102,7 @@
 </style>
 
 <a href="{$page.params.leagueName}/matches/?gamedayId={match.roundId}">
-    back
+    <Icon>arrow-left</Icon>
 </a>
 <div class="match-detail">
     <MatchHeader {match} {gameday}/>
