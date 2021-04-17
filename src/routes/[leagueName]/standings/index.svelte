@@ -98,30 +98,32 @@
         <h2 slot="header">{standings.title}</h2>
 
         {#if standings.standings.length}
-            <div className="standings">
-                <div className="standings__row standings__row--header"
+            <div class="standings">
+                <div class="standings__row standings__row--header"
                 >
-                    <div className="standings__col standings__col--position">
+                    <div class="standings__col standings__col--position">
                         Pos.
                     </div>
-                    <div className="standings__col standings__col--name">
+                    <div class="standings__col standings__col--name">
                         Name
                     </div>
-                    <div className="standings__col standings__col--points">
+                    <div class="standings__col standings__col--points">
                         Punkte
                     </div>
                 </div>
                 {#each standings.standings as item, i}
-                    <div className="standings__row"
+                    <div class="standings__row"
                          class:standings__row--self={item.self}
                     >
-                        <div className="standings__col standings__col--position">
-                            {i + 1}.
+                        <div class="standings__col standings__col--position">
+                            {#if !(i > 0 && standings.standings[i - 1].position === item.position)}
+                                {item.position}.
+                            {/if}
                         </div>
-                        <div className="standings__col standings__col--name">
+                        <div class="standings__col standings__col--name">
                             {item.username}
                         </div>
-                        <div className="standings__col standings__col--points">
+                        <div class="standings__col standings__col--points">
                             {item.points}
                         </div>
                     </div>

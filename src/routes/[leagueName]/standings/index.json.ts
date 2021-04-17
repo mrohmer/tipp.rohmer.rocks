@@ -28,7 +28,14 @@ const buildStandings = (users: User[], userId: string, leagueId: string, season:
       points: points[leagueId][season],
       self: userId === foreignId,
     }))
-    .sort(((a, b) => a.points > b.points ? -1 : 1))
+    .sort(((a, b) => a.points !== b.points ? (a.points > b.points ? -1 : 1) : a.username.toLowerCase().localeCompare(b.username.toLowerCase())))
+    .map((item, _, array) => ({
+      ...item,
+      position: array.findIndex(cur => cur.points === item.points) + 1
+    }))
+    .map(item => {
+      return item;
+    })
     ;
 };
 const flattenGroups = (usersByGroup: { group: Group, users: User[] }[]): User[] => {

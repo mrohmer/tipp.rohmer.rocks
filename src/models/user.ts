@@ -52,6 +52,7 @@ export interface StandingsItem {
   username: string;
   self: boolean;
   points: number;
+  position: number;
 }
 export interface StandingsByGroup {
   id?: string;
