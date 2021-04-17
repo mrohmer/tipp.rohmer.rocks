@@ -4,9 +4,9 @@ import type {CronTupel} from '../types';
 import {recalcUsersPoints} from './recalc-user';
 import {processLeague} from './process-league';
 import type {Match} from '../../models/kicker/match';
-import {arrayUnique} from './utils';
 import {addNotifications} from './add-notifications';
 import {log} from './log';
+import {arrayUnique} from '../../utils/array-unique';
 
 const calcPoints = async () => {
   log('starting');

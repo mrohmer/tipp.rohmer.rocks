@@ -1,9 +1,9 @@
 import type {Points, User} from '../../models/user';
 import {getTipRepository, getUserRepository} from './db';
 import {In, Not} from 'typeorm';
-import {arrayUnique} from './utils';
 import type {Change} from './model';
 import {log} from './log';
+import {arrayUnique} from '../../utils/array-unique';
 
 const calcTotalPointsFromSeasonObj = (points: Record<string, number>): number => Object.values(points)
   .reduce(

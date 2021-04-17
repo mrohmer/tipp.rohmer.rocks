@@ -4,7 +4,6 @@ import type {Match} from '../../models/kicker/match';
 import {fetchGames, fetchLeagueInfo} from '../../services/kicker-api.service';
 import {environment} from '../../environments/environment';
 import {getRatedMatchRepository} from './db';
-import {In} from 'typeorm';
 
 const getPreviousGamedayId = (currentId: string, gamedays: Gameday[]): string => {
   if (!gamedays || !gamedays.length) {
