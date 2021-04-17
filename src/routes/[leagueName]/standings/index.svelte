@@ -96,35 +96,42 @@
                          tooltipRight="{nextGroup ? nextGroup.title : null}"
     >
         <h2 slot="header">{standings.title}</h2>
-        <div class="standings">
-            <div class="standings__row standings__row--header"
-            >
-                <div class="standings__col standings__col--position">
-                    Pos.
-                </div>
-                <div class="standings__col standings__col--name">
-                    Name
-                </div>
-                <div class="standings__col standings__col--points">
-                    Punkte
-                </div>
-            </div>
-            {#each standings.standings as item, i}
-                <div class="standings__row"
-                     class:standings__row--self={item.self}
+
+        {#if standings.standings.length}
+            <div className="standings">
+                <div className="standings__row standings__row--header"
                 >
-                    <div class="standings__col standings__col--position">
-                        {i + 1}.
+                    <div className="standings__col standings__col--position">
+                        Pos.
                     </div>
-                    <div class="standings__col standings__col--name">
-                        {item.username}
+                    <div className="standings__col standings__col--name">
+                        Name
                     </div>
-                    <div class="standings__col standings__col--points">
-                        {item.points}
+                    <div className="standings__col standings__col--points">
+                        Punkte
                     </div>
                 </div>
-            {/each}
-        </div>
+                {#each standings.standings as item, i}
+                    <div className="standings__row"
+                         class:standings__row--self={item.self}
+                    >
+                        <div className="standings__col standings__col--position">
+                            {i + 1}.
+                        </div>
+                        <div className="standings__col standings__col--name">
+                            {item.username}
+                        </div>
+                        <div className="standings__col standings__col--points">
+                            {item.points}
+                        </div>
+                    </div>
+                {/each}
+            </div>
+        {:else}
+            <div style="text-align: center">
+                Noch keine Ergebnisse verfügbar.
+            </div>
+        {/if}
 
     </SlideableNavigation>
 {/if}
