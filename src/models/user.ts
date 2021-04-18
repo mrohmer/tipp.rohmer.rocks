@@ -43,6 +43,14 @@ export class User {
       }
     });
   }
+
+  getPublic(): Pick<User, 'displayName' | 'id' | 'notificationsEnabled'> {
+    return {
+      id: this.id.toString(),
+      displayName: this.displayName,
+      notificationsEnabled: this.notificationsEnabled,
+    };
+  }
 }
 
 export type Points = Partial<Record<LeagueId, Record<string, number>>>

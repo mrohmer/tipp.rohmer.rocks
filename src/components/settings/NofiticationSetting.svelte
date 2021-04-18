@@ -2,7 +2,7 @@
   import {createEventDispatcher, onMount} from 'svelte';
   import SettingsRow from "./SettingsRow.svelte";
   import {environment} from '../../environments/environment';
-  import Switch from "../form/Switch.svelte";
+  import Switch from "../control/Switch.svelte";
 
   function urlBase64ToUint8Array(base64String) {
     var padding = '='.repeat((4 - base64String.length % 4) % 4);

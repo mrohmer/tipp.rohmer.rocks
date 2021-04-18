@@ -31,6 +31,7 @@
     "sass": "^1.32.8",
     "session-file-store": "^1.5.0",
     "sirv": "^1.0.0",
+    "svelte-previous": "^2.0.0",
     "typeorm": "^0.2.31",
     "uuid": "^8.3.2",
     "web-push": "^3.4.4"

@@ -2,6 +2,7 @@
   import type {Match} from '../../models/kicker/match';
   import {createEventDispatcher} from 'svelte';
   import {Tip} from '../../models/tip';
+  import Button from "../control/Button.svelte";
 
   export let match: Match;
   export let hasHeader = true;
@@ -87,18 +88,10 @@
     &__separator {
       width: 4px;
     }
-    &__submit {
-      height: $height;
+    :global(#{&}__submit) {
       margin-left: 5px;
       margin-right: -55px;
-      border: none;
       width: 50px;
-      background: #111;
-      color: rgb(255 62 0);
-      outline: 0;
-      &:focus, &:active {
-        background: #222;
-      }
     }
     &--anonymized {
       #{$this}__content {
@@ -149,7 +142,7 @@
                     <input bind:value={tip.guest} placeholder="-">
                 </div>
                 {#if dirty}
-                    <button type="submit" class="tip__submit">save</button>
+                    <Button type="submit" className="tip__submit">save</Button>
                 {/if}
             </form>
         {/if}
