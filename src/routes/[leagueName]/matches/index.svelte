@@ -64,7 +64,7 @@
       .reduce(
         (prev, curr) => {
           const date = new Date(curr.date);
-          const dateStr = `${dayOfWeekMap[date.getDay()]} ${date.getDate().toString().padStart(2, '0')}.${date.getMonth().toString().padStart(2, '0')}.${date.getFullYear()}`;
+          const dateStr = `${dayOfWeekMap[date.getDay()]} ${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
           return {
             ...prev,
             [dateStr]: [
