@@ -5,6 +5,7 @@ import {getLeagueInfo} from '../index.json';
 import {environment} from '../../../environments/environment';
 import type {Group} from '../../../models/group';
 import {usersArrayUnique} from '../../../utils/user';
+import {CaptureSentryError} from '../../../decorators/catch/node';
 
 const asyncFilter = async <T>(arr: T[], predicate: (item: T) => Promise<boolean>) => {
   const results = await Promise.all(arr.map(predicate));
@@ -60,56 +61,60 @@ const flattenGroups = (usersByGroup: { group: Group, users: User[] }[]): User[] 
     .filter((item, index, array) => index === array.findIndex(i => i.id === item.id))
 }
 
-export const get = async (req, res) => {
-  const {leagueName} = req.params;
+class Handler {
+  @CaptureSentryError()
+  static async get(req, res){
+    const {leagueName} = req.params;
 
-  if (!(leagueName in leagueMap)) {
-    res.sendStatus(404);
-    return;
-  }
-
-  const leagueId = leagueMap[leagueName].id;
-  const leagueInfo = await getLeagueInfo(leagueId);
-  const season = environment.overrideSeason ?? leagueInfo.currentSeasonId;
-
-  const user = await getConnection().getRepository(User).findOne({
-    where: {
-      foreignId: req.user.id
+    if (!(leagueName in leagueMap)) {
+      res.sendStatus(404);
+      return;
     }
-  });
 
-  const groups = await user.getGroups();
-  const usersByGroup = await getOtherUsersByGroups(user, groups);
-  const allUsers = flattenGroups(usersByGroup);
+    const leagueId = leagueMap[leagueName].id;
+    const leagueInfo = await getLeagueInfo(leagueId);
+    const season = environment.overrideSeason ?? leagueInfo.currentSeasonId;
 
-  const globalStandings: Standings = await buildStandings(
-    [user, ...allUsers],
-    user.foreignId,
-    leagueId,
-    season,
-  );
+    const user = await getConnection().getRepository(User).findOne({
+      where: {
+        foreignId: req.user.id
+      }
+    });
 
-  const standingsByGroups: StandingsByGroup[] =
-    groups.length > 1
-      ? await Promise.all(usersByGroup
-        .map(async ({group, users}) => ({
-          id: group.id.toString(),
-          title: group.name,
-          standings: await buildStandings(
-            [user, ...users],
-            user.foreignId,
-            leagueId,
-            season,
-          )
-        })))
-      : [];
+    const groups = await user.getGroups();
+    const usersByGroup = await getOtherUsersByGroups(user, groups);
+    const allUsers = flattenGroups(usersByGroup);
 
-  res.writeHead(200, {
-    'Content-Type': 'application/json'
-  });
+    const globalStandings: Standings = await buildStandings(
+      [user, ...allUsers],
+      user.foreignId,
+      leagueId,
+      season,
+    );
 
-  res.end(JSON.stringify([
-    {title: 'Total', standings: globalStandings},
-    ...standingsByGroups,
-  ]));
+    const standingsByGroups: StandingsByGroup[] =
+      groups.length > 1
+        ? await Promise.all(usersByGroup
+          .map(async ({group, users}) => ({
+            id: group.id.toString(),
+            title: group.name,
+            standings: await buildStandings(
+              [user, ...users],
+              user.foreignId,
+              leagueId,
+              season,
+            )
+          })))
+        : [];
+
+    res.writeHead(200, {
+      'Content-Type': 'application/json'
+    });
+
+    res.end(JSON.stringify([
+      {title: 'Total', standings: globalStandings},
+      ...standingsByGroups,
+    ]));
+  }
 }
+export const get = Handler.get
