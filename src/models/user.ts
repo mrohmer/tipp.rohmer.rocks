@@ -35,6 +35,14 @@ export class User {
     const groups = await getConnection().getRepository(Group).find();
     return groups.filter(group => groupIds.includes(group.id.toString()));
   }
+  getTips({season, leagueId}: Partial<Record<'season'|'leagueId', string>>): Promise<Tip[]> {
+    return getConnection().getRepository(Tip).find({
+      where: {
+        season,
+        leagueId,
+      }
+    })
+  }
   getTip(matchId: string): Promise<Tip> {
     return getConnection().getRepository(Tip).findOne({
       where: {

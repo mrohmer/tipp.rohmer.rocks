@@ -6,6 +6,10 @@ import {environment} from '../../../environments/environment';
 import type {Group} from '../../../models/group';
 import {usersArrayUnique} from '../../../utils/user';
 
+const asyncFilter = async <T>(arr: T[], predicate: (item: T) => Promise<boolean>) => {
+  const results = await Promise.all(arr.map(predicate));
+  return arr.filter((_v, index) => results[index]);
+}
 const getOtherUsersByGroups = (user: User, groups: Group[]): Promise<{ group: Group, users: User[] }[]> => {
   return Promise.all(
     groups.map(async group => ({
@@ -16,16 +20,26 @@ const getOtherUsersByGroups = (user: User, groups: Group[]): Promise<{ group: Gr
     }))
   );
 };
-const buildStandings = (users: User[], userId: string, leagueId: string, season: string): Standings => {
-  return usersArrayUnique(users)
-    .filter(
-      ({points}) => !!points
-        && points && leagueId in points
-        && season in points[leagueId]
-    )
-    .map(({foreignId, points, displayName}) => ({
+const buildStandings = async (users: User[], userId: string, leagueId: string, season: string): Promise<Standings> => {
+  const filteredUsers = await asyncFilter(usersArrayUnique(users), async user => {
+    const {points} = user;
+    const hasPoints = !!points
+      && points && leagueId in points
+      && season in points[leagueId]
+    ;
+    if (hasPoints) {
+      return true;
+    }
+    const tips = await user.getTips({
+      season,
+      leagueId,
+    });
+
+    return tips.length > 0
+  });
+  return filteredUsers.map(({foreignId, points, displayName}) => ({
       username: displayName,
-      points: points[leagueId][season],
+      points: points && points[leagueId] && points[leagueId][season] || 0,
       self: userId === foreignId,
     }))
     .sort(((a, b) => a.points !== b.points ? (a.points > b.points ? -1 : 1) : a.username.toLowerCase().localeCompare(b.username.toLowerCase())))
@@ -68,7 +82,7 @@ export const get = async (req, res) => {
   const usersByGroup = await getOtherUsersByGroups(user, groups);
   const allUsers = flattenGroups(usersByGroup);
 
-  const globalStandings: Standings = buildStandings(
+  const globalStandings: Standings = await buildStandings(
     [user, ...allUsers],
     user.foreignId,
     leagueId,
@@ -77,17 +91,17 @@ export const get = async (req, res) => {
 
   const standingsByGroups: StandingsByGroup[] =
     groups.length > 1
-      ? usersByGroup
-        .map(({group, users}) => ({
+      ? await Promise.all(usersByGroup
+        .map(async ({group, users}) => ({
           id: group.id.toString(),
           title: group.name,
-          standings: buildStandings(
+          standings: await buildStandings(
             [user, ...users],
             user.foreignId,
             leagueId,
             season,
           )
-        }))
+        })))
       : [];
 
   res.writeHead(200, {
