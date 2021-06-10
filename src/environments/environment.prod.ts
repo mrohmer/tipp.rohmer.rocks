@@ -18,7 +18,7 @@ export const environment: Environment = {
     logoutRedirect: process.env.TIPP_AUTH_LOGOUT_REDIRECT_URL,
   },
   leagues: [
-    LeagueKey.EM_U21,
+    LeagueKey.EM,
   ],
   push: {
     publicKey: '#{PUSH_PUBLIC}#',
