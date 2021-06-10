@@ -22,5 +22,6 @@ export interface Environment {
     publicKey: string;
     privateKey: string;
     mail: string;
-  }
+  },
+  sentry?: Record<'backend'|'frontend', string>;
 }

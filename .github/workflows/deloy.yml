@@ -29,6 +29,8 @@ jobs:
           PUSH_PUBLIC: ${{ secrets.PUSH_PUBLIC }}
           PUSH_PRIVATE: ${{ secrets.PUSH_PRIVATE }}
           PUSH_MAIL: ${{ secrets.PUSH_MAIL }}
+          SENTRY_DSN_BACKEND: ${{ secrets.SENTRY_DSN_BACKEND }}
+          SENTRY_DSN_FRONTEND: ${{ secrets.SENTRY_DSN_FRONTEND }}
       - name: mv env file
         run: mv src/environments/environment.prod.ts src/environments/environment.ts
       - name: build

@@ -25,4 +25,8 @@ export const environment: Environment = {
     privateKey: process.env.TIPP_PUSH_PRIVATE,
     mail: process.env.TIPP_PUSH_MAIL,
   },
+  sentry: {
+    backend: process.env.SENTRY_DSN_BACKEND,
+    frontend: '#{SENTRY_DSN_FRONTEND}#'
+  },
 };

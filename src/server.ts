@@ -17,6 +17,8 @@ import {RatedMatch} from './models/rated-match';
 import {Notification} from './models/notification';
 import {Group} from './models/group';
 import {UserGroupConnection} from './models/user-group-connection';
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
 
 const {PORT, NODE_ENV} = process.env;
 const dev = NODE_ENV === 'development';
@@ -44,6 +46,26 @@ passport.deserializeUser(function (user, done) {
 
 const app = polka(); // You can also use Express
 ;(async () => {
+  const sentryDsn = environment.sentry?.backend;
+  if (sentryDsn) {
+    Sentry.init({
+      dsn: sentryDsn,
+      integrations: [
+        // enable HTTP calls tracing
+        new Sentry.Integrations.Http({tracing: true}),
+        // @ts-ignore
+        new Tracing.Integrations.Express({app}),
+      ],
+
+      // Set tracesSampleRate to 1.0 to capture 100%
+      // of transactions for performance monitoring.
+      // We recommend adjusting this value in production
+      tracesSampleRate: 1.0,
+    });
+    app.use(Sentry.Handlers.requestHandler());
+    app.use(Sentry.Handlers.tracingHandler());
+
+  }
   await createConnection({
     type: 'mongodb',
     url: environment.db.URI,
@@ -82,13 +104,22 @@ const app = polka(); // You can also use Express
       compression({threshold: 0}),
       sirv('static', {dev}),
       securedMiddleware(),
-      sapper.middleware({
-        session: (req, res) => ({
-          token: req.session.token,
-        }),
+    );
+
+
+  app.use(
+    sapper.middleware({
+      session: (req, res) => ({
+        token: req.session.token,
       }),
-    )
+    }),
+  )
     .listen(PORT, err => {
       if (err) console.log('error', err);
+
+
+      if (sentryDsn && err) {
+        Sentry.captureException(err);
+      }
     });
 })()
