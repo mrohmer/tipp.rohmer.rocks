@@ -44,7 +44,7 @@ class Handler {
         .filter(tip => !!tip)
     ;
 
-    const anonymized = match.completed !== '1';
+    const anonymized = !('results' in match);
     let mappedTips: OthersTip[] = [];
     if (tips.length) {
       mappedTips = tips
