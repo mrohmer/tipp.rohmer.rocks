@@ -6,7 +6,7 @@ import {Tip} from './tip';
 
 @Entity('user')
 export class User {
-  @ObjectIdColumn({ name: '_id', type: 'string' })
+  @ObjectIdColumn({name: '_id', type: 'string'})
   id: string;
   @Column()
   foreignId: string;
@@ -18,6 +18,8 @@ export class User {
   notificationSubscriptions: Subscription[];
   @Column()
   points: Points = {};
+  @Column()
+  roles: string[] = [];
 
   async getGroups(): Promise<Group[]> {
     const connections = await getConnection().getRepository(UserGroupConnection).find({
@@ -35,7 +37,8 @@ export class User {
     const groups = await getConnection().getRepository(Group).find();
     return groups.filter(group => groupIds.includes(group.id.toString()));
   }
-  getTips({season, leagueId}: Partial<Record<'season'|'leagueId', string>>): Promise<Tip[]> {
+
+  getTips({season, leagueId}: Partial<Record<'season' | 'leagueId', string>>): Promise<Tip[]> {
     return getConnection().getRepository(Tip).find({
       where: {
         season,
@@ -43,6 +46,7 @@ export class User {
       }
     })
   }
+
   getTip(matchId: string): Promise<Tip> {
     return getConnection().getRepository(Tip).findOne({
       where: {
@@ -52,24 +56,32 @@ export class User {
     });
   }
 
-  getPublic(): Pick<User, 'displayName' | 'id' | 'notificationsEnabled'> {
+  getPublic(): Pick<User, 'displayName' | 'id' | 'notificationsEnabled' | 'foreignId' | 'roles'> {
     return {
       id: this.id.toString(),
       displayName: this.displayName,
       notificationsEnabled: this.notificationsEnabled,
+      foreignId: this.foreignId,
+      roles: this.roles,
     };
+  }
+
+  hasRole(role: string): boolean {
+    return this.roles && this.roles.includes(role);
   }
 }
 
 export type Points = Partial<Record<LeagueId, Record<string, number>>>
-export type Subscription = ({endpoint: string} & Record<string, any>);
+export type Subscription = ({ endpoint: string } & Record<string, any>);
 export type Standings = StandingsItem[];
+
 export interface StandingsItem {
   username: string;
   self: boolean;
   points: number;
   position: number;
 }
+
 export interface StandingsByGroup {
   id?: string;
   title: string;

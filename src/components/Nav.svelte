@@ -11,6 +11,7 @@
 
 
   export let segment: string;
+  export let isAdmin = false;
 </script>
 
 <style type="text/scss">
@@ -104,6 +105,13 @@
             </a>
         </li>
         <li class="spacer"></li>
+        {#if isAdmin}
+            <li class="icon">
+                <a href="/users" aria-current="{segment === 'users' ? 'page' : undefined}">
+                    <Icon>user</Icon>
+                </a>
+            </li>
+        {/if}
         <li class="icon">
             <a href="/settings" aria-current="{segment === 'settings' ? 'page' : undefined}">
                 <Icon>cog</Icon>
