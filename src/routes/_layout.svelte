@@ -16,8 +16,6 @@
 		try {
 			const user: User = await getUser.call(this);
 
-			console.log(user, user.roles?.includes('admin'));
-
 			return {isAdmin: user.roles?.includes('admin')}
 		} catch (e) {
 			this.error(e.status, e.message);

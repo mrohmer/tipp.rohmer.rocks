@@ -30,6 +30,7 @@
   export let groups: Group[];
 
   let groupsLoading: Record<string, boolean> = {};
+  let addGroupLoading = false;
 
   const usersInGroup = (group: Group) => {
     return users.filter(user => user.groups.some(g => g.id === group.id))
@@ -38,20 +39,25 @@
     return users.filter(user => user.groups.every(g => g.id !== group.id))
   }
 
-  const wrapGroupLoading = async (group: Group, func: () => Promise<any>) => {
+  const wrapLoading = async (loading: (loading: boolean) => void, func: () => Promise<any>) => {
     try {
-      groupsLoading = {
-        ...groupsLoading,
-        [group.id]: true,
-      }
+      loading(true);
 
       await func();
     } finally {
-      groupsLoading = {
-        ...groupsLoading,
-        [group.id]: false,
-      }
+      loading(false);
     }
+  }
+  const wrapGroupLoading = async (group: Group, func: () => Promise<any>) => {
+    await wrapLoading(
+      loading => {
+        groupsLoading = {
+          ...groupsLoading,
+          [group.id]: loading,
+        }
+      },
+      func,
+    )
   }
   const reload = async () => {
     const data = await preload.call(window);
@@ -84,14 +90,47 @@
   }
   const handleRemoveFromGroupClick = async (group: Group, user: User) => {
     await wrapGroupLoading(group, async () => {
-      event.preventDefault();
-
       await removeUserFromGroup(group.id, user.foreignId);
       await reload();
     })
   }
+  const addGroup = async (name: string) => {
+    await fetch(`/users/group`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({name})
+    });
+  }
+  const handleAddGroupSubmit = async (event) => {
+    await wrapLoading(
+      loading => addGroupLoading = loading,
+      async () => {
+        event.preventDefault();
+
+        const {name: nameEl} = event.target;
+
+        await addGroup(nameEl.value);
+
+        nameEl.value = '';
+        await reload();
+      })
+  }
 </script>
 
+<h2>Add Group</h2>
+{#if addGroupLoading}
+    loading...
+{:else}
+    <form on:submit={handleAddGroupSubmit}>
+        <label for="group-name">Name</label>
+        <input id="group-name" name="name" required/>
+        <button>save</button>
+    </form>
+{/if}
+
+<h2>Groups</h2>
 {#each groups as group}
     <div>
         <h3>{group.name}</h3>
