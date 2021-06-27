@@ -12,6 +12,7 @@
   $: isInMatch = 'results' in match && match.completed === '0';
   $: isAfterMatch = 'results' in match && match.completed === '1';
   $: isAfterFirstHalftime = isAfterMatch && match.results.hergHz;
+  $: isAfterExtension = isAfterMatch && match.results.hergVerl;
 </script>
 <style type="text/scss">
   .match-result {
@@ -55,7 +56,7 @@
       display: inline-block;
     }
 
-    &__halftime {
+    &__halftime, &__extension {
       background-color: #585858;
       height: 22px;
       font-size: 15px;
@@ -89,26 +90,32 @@
         </div>
     {:else}
         <div class="match-result__digit">
-            {match.results.hergEnde}
+            {isAfterExtension ? match.results.hergVerl : match.results.hergEnde}
         </div>
         <div class="match-result__separator">
             :
         </div>
         <div class="match-result__digit">
-            {match.results.aergEnde}
+            {isAfterExtension ? match.results.aergVerl : match.results.aergEnde}
         </div>
         {#if size === 'big' && isAfterFirstHalftime}
-            <div class="match-result__halftime">
-                <div class="match-result__digit">
-                    {match.results.hergHz}
+            {#if isAfterExtension}
+                <div class="match-result__extension">
+                    n.V.
                 </div>
-                <div class="match-result__separator">
-                    :
+            {:else if isAfterFirstHalftime}
+                <div class="match-result__halftime">
+                    <div class="match-result__digit">
+                        {match.results.hergHz}
+                    </div>
+                    <div class="match-result__separator">
+                        :
+                    </div>
+                    <div class="match-result__digit">
+                        {match.results.aergHz}
+                    </div>
                 </div>
-                <div class="match-result__digit">
-                    {match.results.aergHz}
-                </div>
-            </div>
+            {/if}
         {/if}
     {/if}
 </div>

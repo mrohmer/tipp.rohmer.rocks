@@ -26,6 +26,8 @@ export interface Match {
     aergHz: string;
     hergEnde: string;
     aergEnde: string;
+    hergVerl?: string;
+    aergVerl?: string;
   }
 }
 

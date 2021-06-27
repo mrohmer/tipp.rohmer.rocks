@@ -4,9 +4,9 @@ import {Points} from '../../models/constants';
 import {getTipRepository} from './db';
 
 const calcPointsForTip = (tip: Tip, match: Match): number => {
-  const {hergEnde, aergEnde} = match.results;
-  const matchHome = parseInt(hergEnde);
-  const matchGuest = parseInt(aergEnde);
+  const {hergEnde, aergEnde, hergVerl, aergVerl} = match.results;
+  const matchHome = parseInt(hergVerl ?? hergEnde);
+  const matchGuest = parseInt(aergVerl ?? aergEnde);
   const {home, guest} = tip;
 
   const type = matchHome !== matchGuest ? 'victory' : 'draw';
