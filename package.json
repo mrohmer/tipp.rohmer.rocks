@@ -26,7 +26,7 @@
     "njwt": "^1.0.0",
     "node-cache": "^5.1.2",
     "node-cron": "^3.0.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.1.1",
     "object-hash": "^2.1.1",
     "passport": "^0.4.1",
     "passport-auth0": "^1.4.0",
