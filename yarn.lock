@@ -3518,10 +3518,10 @@ svelte-previous@^2.0.0:
   resolved "https://registry.yarnpkg.com/svelte-previous/-/svelte-previous-2.0.0.tgz#b379451ec4aa39e2aa3d00938373a3dbf0eab0ce"
   integrity sha512-Oeh/ba8g+EHvs+WI0vRm8t0sLuWFQ8aT+h2EPFyMBlvE0YrhIOyuOlS2aiVkSgAa/rY3bFL3ZX6buhT+PpZcfg==
 
-svelte@^3.17.3:
-  version "3.35.0"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.35.0.tgz#e0d0ba60c4852181c2b4fd851194be6fda493e65"
-  integrity sha512-gknlZkR2sXheu/X+B7dDImwANVvK1R0QGQLd8CNIfxxGPeXBmePnxfzb6fWwTQRsYQG7lYkZXvpXJvxvpsoB7g==
+svelte@^3.49.0:
+  version "3.49.0"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.49.0.tgz#5baee3c672306de1070c3b7888fc2204e36a4029"
+  integrity sha512-+lmjic1pApJWDfPCpUUTc1m8azDqYCG1JN9YEngrx/hUyIcFJo6VZhj0A1Ai0wqoHcEIuQy+e9tk+4uDgdtsFA==
 
 tapable@^1.0.0, tapable@^1.1.3:
   version "1.1.3"
